@@ -82,8 +82,8 @@ DATABASES = {
         #'NAME': BASE_DIR / 'db.sqlite3',
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'mydjangoblog',
-        'USER': '用户名',
-        'PASSWORD': '密码',
+        'USER': '',
+        'PASSWORD': '',
         'HOST': 'localhost',
         'PORT': '3306',
     }

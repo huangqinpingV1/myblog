@@ -1,6 +1,6 @@
 from django.db import models
 #路由相关和设置相关包
-from django.core.urlresolvers import reverse
+from django.urls import reverse
 from django.conf import settings
 
 # Create your models here.
@@ -10,7 +10,7 @@ class Article(models.Model):
 
     title = models.CharField('标题',max_length=200)
     body = models.TextField('正文')
-    create_time = models.DateTimeField('创建时间',auto_add_now  = True)
+    create_time = models.DateTimeField('创建时间',auto_now_add = True)
     last_mod_time = models.DateTimeField('修改时间',auto_now = True)
     pub_time  = models.DateTimeField('发布时间',blank=True,null=True,help_text='不指定发布时间则视为草稿，可以指定未来时间，到时将自动发布。')
     status  = models.CharField('文章状态',max_length=1,choices=STATUS_CHOICES)
@@ -19,7 +19,7 @@ class Article(models.Model):
     author = models.ForeignKey(settings.AUTH_USER_MODEL,verbose_name = '作者',on_delete=models.CASCADE)
 
     category = models.ForeignKey('Category',verbose_name='分类',on_delete=models.CASCADE)
-    tags  = models.ManyToManyField('Tag',verboose_name='标签集合',blank=True)
+    tags  = models.ManyToManyField('Tag',verbose_name='标签集合',blank=True)
 
     def __str__(self):
         return self.title

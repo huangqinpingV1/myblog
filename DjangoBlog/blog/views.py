@@ -8,7 +8,7 @@ import markdown2
 
 class IndexView(ListView):
     #template_name属性用于指定用哪个模板进行渲染
-    template_name = 'blog/index.html'
+    template_name = 'index.html'
 
 
     #context_object_name属性用于给上下文变量取名（在模板中使用该名字)
@@ -22,7 +22,7 @@ class IndexView(ListView):
         return article_list
 
     
-    def get_context_date(self,**kwargs):
+    def get_context_data(self,**kwargs):
         #增加额外的数据，返回文章分类
         kwargs['category_list'] = Category.objects.all().order_by('name')
         return super(IndexView,self).get_context_data(**kwargs)

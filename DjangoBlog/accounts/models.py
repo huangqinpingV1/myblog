@@ -1,5 +1,5 @@
 from django.db import models
-from django.contrib.models import AbstractUser
+from django.contrib.auth.models import AbstractUser
 # Create your models here.
 #创建用户模型
 class BlogUser(AbstractUser):

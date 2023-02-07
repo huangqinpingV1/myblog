@@ -10,7 +10,7 @@ class Article(models.Model):
 
     title = models.CharField('标题',max_length=200)
     body = models.TextField('正文')
-    create_time = models.DateTimeField('创建时间',auto_now_add = True)
+    created_time = models.DateTimeField('创建时间',auto_now_add = True)
     last_mod_time = models.DateTimeField('修改时间',auto_now = True)
     pub_time  = models.DateTimeField('发布时间',blank=True,null=True,help_text='不指定发布时间则视为草稿，可以指定未来时间，到时将自动发布。')
     status  = models.CharField('文章状态',max_length=1,choices=STATUS_CHOICES)
@@ -49,7 +49,7 @@ class Article(models.Model):
 #文章分类模型
 class Category(models.Model):
     name = models.CharField('分类名',max_length =30)
-    create_time = models.DateTimeField('创建时间',auto_now_add = True)
+    created_time = models.DateTimeField('创建时间',auto_now_add = True)
     last_mod_time  = models.DateTimeField('修改时间',auto_now = True)
 
     class Meta:
@@ -64,7 +64,7 @@ class Category(models.Model):
 #文章标签模型 
 class Tag(models.Model):
     name = models.CharField('标签名',max_length=30)
-    creat_time = models.DateTimeField('创建时间',auto_now_add=True)
+    created_time = models.DateTimeField('创建时间',auto_now_add=True)
     last_mod_time = models.DateTimeField('修改时间',auto_now=True)
 
     def __str__(self):

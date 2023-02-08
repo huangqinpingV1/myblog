@@ -18,10 +18,5 @@ from django.urls import path,include
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-<<<<<<< HEAD
-    path('admin/',admin.site.urls),
-]
-=======
     path(r'',include('blog.urls',namespace ='blog')),
     ]
->>>>>>> 6b65a30efa2e3a093281c93e24191b8438611c67

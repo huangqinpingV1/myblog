@@ -13,7 +13,7 @@ class Comment(models.Model):
 
     class Meta:
         ordering = ['created_time']
-        verbose_name = '评论'
+        verbose_name = "评论"
         verbose_name_plural = verbose_name
 
     def __str__(self):

@@ -42,7 +42,7 @@ INSTALLED_APPS = [
     #增加accounts应用，账号相关
     'accounts',
     #增加comments应用，评论相关
-    'commments',
+    'comments',
 ]
 
 MIDDLEWARE = [

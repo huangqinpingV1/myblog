@@ -138,3 +138,9 @@ STATICFILES = BASE_DIR/'static'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 AUTH_USER_MODEL = 'accounts.BlogUser'
+#TimeFormat
+TIME_FORMAT = '%Y-%m-%d %H:%M:%S'
+DATE_TIME_FORMAT = '%Y-%m-%d %H:%M:%S'
+SITE_NAME = 'Django Blog'
+SITE_DESCRIPTION = 'The Simple blog creating by Django and Bootstrap.'
+ARTICLE_SUB_LENGTH = 300

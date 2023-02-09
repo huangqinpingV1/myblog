@@ -28,6 +28,8 @@ def custom_markdown(content):
 @register.inclusion_tag('categorytree.html')
 def parseCategoryName(article):
     names  = article.getCategoryNameTree()
+    names.append((settings.SITE_NAME,'http://127.0.0.1:8080'))
+    names = names[::-1]
     print(names)
     return {'names':names}
 

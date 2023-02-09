@@ -36,7 +36,6 @@ class Article(models.Model):
 
     def getCategoryNameTree(self):
         names =[]
-        names.append((settings.SITE_NAME,'http://127.0.0.1:8000'))
 
         #递归调用
         def parse(category):

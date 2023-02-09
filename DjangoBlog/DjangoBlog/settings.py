@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-qt@1a8ed_^g_@ha9s2zpineqra#+_3c0=-#x&a1-v4@#x1gpp0
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['1.12.250.75','localhost']
 
 
 # Application definition
@@ -68,6 +68,8 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                #模板相关
+                'blog.context_processors.seo_processor',
             ],
         },
     },
@@ -142,5 +144,5 @@ AUTH_USER_MODEL = 'accounts.BlogUser'
 TIME_FORMAT = '%Y-%m-%d %H:%M:%S'
 DATE_TIME_FORMAT = '%Y-%m-%d %H:%M:%S'
 SITE_NAME = 'Django Blog'
-SITE_DESCRIPTION = 'The Simple blog creating by Django and Bootstrap.'
+SITE_DESCRIPTION = '简单的Django应用.'
 ARTICLE_SUB_LENGTH = 300

@@ -32,13 +32,6 @@ class IndexView(ArticleListView):
 
         return article_list
 
-    
-    def get_context_data(self,**kwargs):
-        #增加额外的数据，返回文章分类
-        kwargs['category_list'] = Category.objects.all().order_by('name')
-        return super(IndexView,self).get_context_data(**kwargs)
-
-
 class ArticleDetailView(DetailView):
     template_name =  'articledetail.html'
     model = Article
@@ -57,6 +50,11 @@ class CategoryDetailView(ArticleListView):
         self.page_description ='分类目录归档:·%s·'
         article_list = Article.objects.filter(category__name=categoryname,status='p')
         return article_list
+    
+    def get_context_data(self,**kwargs):
+        #增加额外数据
+        kwargs['page_description'] = self.page_description
+        return super(CategoryDetailView,self).get_context_data(**kwargs)
 
 class AuthorDetailView(ArticleListView):
     def get_queryset(self):
@@ -64,4 +62,7 @@ class AuthorDetailView(ArticleListView):
         self.page_description ='分类目录归档:·%s·' % author_name
         article_list = Article.objects.filter(author__username=author_name)
         return article_list
-
+    
+    def get_context_data(self,**kwargs):
+        kwargs['page_description'] = self.page_description
+        return super(AuthorDetailView,self).get_context_data(**kwargs)

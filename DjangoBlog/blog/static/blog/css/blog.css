@@ -164,3 +164,9 @@ h6, .h6 {
 .blog-footer p:last-child {
   margin-bottom: 0;
 }
+.blog-read-more {
+  margin-top:40px;
+  margin-bottom:auto;
+  color:#00CCFF;
+  border-bottom:4px double #ededed;
+}

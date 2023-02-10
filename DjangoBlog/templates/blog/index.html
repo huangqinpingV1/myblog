@@ -3,6 +3,15 @@
 
 {% block content %}
     <div class="row">
+	    {% if page_description %}
+	    <div class="col-sm-8 blog-main">
+		    <div class ="panel panel-default">
+			    <div class="panel-body">
+				{{  page_description}}
+			    </div>
+		    </div>
+	    </div>
+	    {% endif %}
 
         <div class="col-sm-8 blog-main">
 

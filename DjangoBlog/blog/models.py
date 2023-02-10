@@ -34,7 +34,7 @@ class Article(models.Model):
     def get_absolute_url(self):
         return reverse('blog:detail',kwargs={'article_id':self.pk})
 
-    def getCategoryNameTree(self):
+    def get_category_tree(self):
         names =[]
 
         #递归调用
@@ -83,7 +83,13 @@ class Tag(models.Model):
     last_mod_time = models.DateTimeField('修改时间',auto_now=True)
 
     def __str__(self):
-        return self.name
+       return self.name
+
+    def get_absolute_url(self):
+        return reverse('blog:tag_detail',kwargs={'tag_name':self.name})
+
+    def get_article_count(self):
+        return Article.objects.filter(tags__name = self.name).distinct().count()
 
     class Meta:
         ordering =  ['name']

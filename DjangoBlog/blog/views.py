@@ -9,8 +9,16 @@ from django.conf import settings
 import markdown
 #通用显示视图
 class ArticleListView(ListView):
-    template_name = 'index.html'
+    #template_name 属性用于指定用哪个模板进行渲染
+    template_name = 'blog/index.html'
+    #context_object_name 用于给上下文变量取名（模板中使用）
     context_object_name   = 'article_list'
+    
+    def set_article_subbody(self,article_list):
+        for article in article_list:
+            article.body  = article.body[0:settings.ARTICLE_SUB_LENGTH]
+
+        return article_list    
     
     def __init__(self):
         self.page_description =  ''
@@ -27,10 +35,10 @@ class IndexView(ArticleListView):
 
     def get_queryset(self):
         article_list = Article.objects.filter(status='p')
-        for article in article_list:
-            article.body = article.body[0:settings.ARTICLE_SUB_LENGTH]
+        #for article in article_list:
+        #    article.body = article.body[0:settings.ARTICLE_SUB_LENGTH]
 
-        return article_list
+        return self.set_article_subbody(article_list)
 
 class ArticleDetailView(DetailView):
     template_name =  'articledetail.html'
@@ -66,3 +74,24 @@ class AuthorDetailView(ArticleListView):
     def get_context_data(self,**kwargs):
         kwargs['page_description'] = self.page_description
         return super(AuthorDetailView,self).get_context_data(**kwargs)
+
+class TagListView(ListView):
+    template_name = ''
+    context_object_name =  'tag_list'
+
+    def get_queryset(self):
+        tag_list = []
+        tags = Tag.objects.all()
+        for t in tags:
+            t.article_set.count()
+
+class TagDetailView(ArticleListView):
+    def get_queryset(self):
+        tag_name = self.kwrags['tag_name']
+        self.page_description = '分类标签: %s '% tag_name
+        artcle_list = Article.objects.filter(tag__name = tag_name)
+        return self.set_article_subbody(article_list)
+
+def get_context_data(self,**kwargs):
+    kwargs['page_description'] = self.page_description
+    return super(TagDetailView,self).get_context_data(**kwargs)

@@ -13,6 +13,6 @@ register = template.Library()
 @register.simple_tag(name='get_comment_count')
 def GetCommentCount(parser,token):
     #查询对应文章的评论总数
-    commentcount = Comment.objects.filter(article_author_id=token).count();
+    commentcount = Comment.objects.filter(article__author_id=token).count();
     return "0" if commentcount == 0 else str(commentcount)+ "  comments"
 

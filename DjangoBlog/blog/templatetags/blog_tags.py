@@ -14,7 +14,7 @@ register = template.Library()
 @register.simple_tag
 def timeformat(data):
     try:
-        return data.strtime(settings.TIME_FORMAT)
+        return data.strftime(settings.TIME_FORMAT)
     except:
         return ""
 
@@ -36,13 +36,38 @@ def parsecategoryname(article):
 
 @register.inclusion_tag('blog/articletaglist.html')
 def loadarticletags(article):
-    tags = artilce.tag.all()
-    tag_list =[]
+    tags = article.tags.all()
+    tags_list =[]
     for tag in tags:
         url = tag.get_absolute_url()
         count = tag.get_article_count()
-        tags_list.append((url,count,tag,random.choice(settings.BOOTSTRAP_COLOR_TYPES)))
+        tag_list.append((url,count,tag,random.choice(settings.BOOTSTRAP_COLOR_TYPES)))
 
     return {'article_tags_list' : tags_list}    
+"""
+@register.tag
+def parseCategoryName(parser,token):
+    tag_name , category = token.split_contents()
+    print(category)
+    print(tag_name)
+    return CategoryNametag(category)
+
+class CategoryNametag(template.Node):
+    def __init__(self,category):
+        self.category=category
+        self.names=[]
 
 
+    def parseCategory(self,category):
+        self.names.append(category.name)
+        if category.parent_category:
+            self.parseCategory(category.parent_category)
+
+
+    def render(self, context):
+        self.parseCategory(self.category)
+        print(self.names)
+        return " > ".join(self.names)
+
+        #if self.category.parent_category:
+    """

@@ -175,3 +175,6 @@ h6, .h6 {
   margin-bottom:auto;
   border-bottom:4px double #ededed;  
 }
+.views {
+  float:right;
+}

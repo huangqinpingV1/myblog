@@ -142,7 +142,7 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 AUTH_USER_MODEL = 'accounts.BlogUser'
 #TimeFormat
 TIME_FORMAT = '%Y-%m-%d %H:%M:%S'
-DATE_TIME_FORMAT = '%Y-%m-%d %H:%M:%S'
+DATE_TIME_FORMAT = '%Y-%m-%d'
 SITE_NAME = 'Django Blog'
 SITE_DESCRIPTION = '简单的Django应用.'
 ARTICLE_SUB_LENGTH = 300
@@ -150,3 +150,7 @@ ARTICLE_SUB_LENGTH = 300
 BOOTSTRAP_COLOR_TYPES = [
         'default','primary','success','info','warning','danger'
         ]
+#侧边栏文章数
+SIDEBAR_ARTICLE_COUNT = 10
+
+#cache setting

@@ -77,7 +77,7 @@ class TagListView(ListView):
     context_object_name =  'tag_list'
 
     def get_queryset(self):
-        tag_list = []
+        tags_list = []
         tags = Tag.objects.all()
         for t in tags:
             t.article_set.count()

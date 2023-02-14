@@ -70,8 +70,14 @@ def loadsidebartags():
             'most_read_articles':most_read_articles,
             'article_dates':dates
             }
+@register.inclusion_tag('blog/tags/article_meta_info.html')
+def loadarticlemetas(article):
+    return {'article':article}
 
-    
+
+@register.inclusion_tag('blog/tags/article_info.html')
+def load_article_detail(article,isindex):
+    return {'article':article,'isindex':isindex}
 """
 @register.tag
 def parseCategoryName(parser,token):

@@ -9,6 +9,7 @@ from django.utils.safestring import mark_safe
 import random
 from blog.models  import Article,Category,Tag
 from django.utils.encoding import force_str
+import traceback
 #注册自定义标签
 register = template.Library()
 
@@ -41,7 +42,7 @@ def parsecategoryname(article):
     names  = article.get_category_tree()
     names.append((settings.SITE_NAME,'http://127.0.0.1:8080'))
     names = names[::-1]
-    print(names)
+    print("parsecategoryname() enter")
     return {'names':names}
 
 
@@ -62,7 +63,8 @@ def loadsidebartags():
     sidebar_categorys = Category.objects.all()
     most_read_articles = Article.objects.filter(status = 'p').order_by('-views')[::settings.SIDEBAR_ARTICLE_COUNT]
     dates = Article.objects.datetimes('created_time','month',order ='DESC')
-    print(dates)
+    print("loadsidebartags")
+
     #tag
     return {
             'recent_acticles':recent_articles,

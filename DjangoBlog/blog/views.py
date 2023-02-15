@@ -9,12 +9,13 @@ from django.conf import settings
 import markdown
 #通用显示视图
 #调试调用栈
-#import traceback
+import traceback
 class ArticleListView(ListView):
     #template_name 属性用于指定用哪个模板进行渲染
     template_name = 'blog/index.html'
     #context_object_name 用于给上下文变量取名（模板中使用）
     context_object_name   = 'article_list'
+    
     
     def __init__(self):
         self.page_description =  ''
@@ -26,6 +27,7 @@ class IndexView(ArticleListView):
 
     #context_object_name属性用于给上下文变量取名（在模板中使用该名字)
     #context_object_name = 'article_list'
+    
 
 
 
@@ -51,7 +53,7 @@ class CategoryDetailView(ArticleListView):
     
     def get_queryset(self):
         categoryname  = self.kwargs['category_name']
-        print(categoryname)
+        print("get_queryset() enter")
         self.page_description ='分类目录归档:·%s·' % categoryname
         article_list = Article.objects.filter(category__name=categoryname,status='p')
         return article_list

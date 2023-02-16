@@ -2,10 +2,12 @@
 {% load blog_tags %}
 
 {% block content %}
+<script>console.log("这里是index.html");</script>
     <div id="primary" class="site-content">
         <div id="content" role="main">
-            {% for article in article_list %}
-                {% load_article_detail article True %}
+	    <script>console.log("触发arrticle_list查询")</script>
+	    {% for article in article_list %}
+	    {%load_article_detail article True %}
                {% comment %} <article id="post-{{ article.pk }}"
                          class="post-3815 post type-post status-publish format-standard hentry category-python tag-python">
                     <header class="entry-header">

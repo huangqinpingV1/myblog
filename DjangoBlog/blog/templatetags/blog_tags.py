@@ -16,6 +16,7 @@ register = template.Library()
 #添加自定义标签
 @register.simple_tag
 def timeformat(data):
+    print("timeformat() enter")
     try:
         return data.strftime(settings.TIME_FORMAT)
     except:
@@ -23,6 +24,7 @@ def timeformat(data):
 
 @register.simple_tag
 def datetimeformat(data):
+    print("datetimeformat() enter")
     try:
         return data.strftime(settings.DATE_TIME_FORMAT)
     except:
@@ -31,6 +33,7 @@ def datetimeformat(data):
 @register.filter(is_safe = True)
 @stringfilter
 def custom_markdown(content):
+    print("custom_markdown() enter")
     return mark_safe(markdown2.markdown(force_str(content),extras=["fenced-code-blocks","cuddled_lists","metadata","tables","spoiler"]))
 
     """return mark_safe(markdown.markdown(content,extensions  =['markdown.extensions.fenced_code','markdown.extensions.codehilite'],
@@ -48,6 +51,7 @@ def parsecategoryname(article):
 
 @register.inclusion_tag('blog/articletaglist.html')
 def loadarticletags(article):
+    print("loadarticletags() enter")
     tags = article.tags.all()
     tags_list =[]
     for tag in tags:
@@ -59,11 +63,11 @@ def loadarticletags(article):
 
 @register.inclusion_tag('blog/sidebar.html')
 def loadsidebartags():
+    print("loadsidebartags() enter")
     recent_articles = Article.objects.filter(status='p')[::settings.SIDEBAR_ARTICLE_COUNT]
     sidebar_categorys = Category.objects.all()
     most_read_articles = Article.objects.filter(status = 'p').order_by('-views')[::settings.SIDEBAR_ARTICLE_COUNT]
     dates = Article.objects.datetimes('created_time','month',order ='DESC')
-    print("loadsidebartags")
 
     #tag
     return {
@@ -74,11 +78,13 @@ def loadsidebartags():
             }
 @register.inclusion_tag('blog/tags/article_meta_info.html')
 def loadarticlemetas(article):
+    print("loadarticlemetas() enter")
     return {'article':article}
 
 
 @register.inclusion_tag('blog/tags/article_info.html')
 def load_article_detail(article,isindex):
+    print("load_article_detail() enter")
     return {'article':article,'isindex':isindex}
 """
 @register.tag

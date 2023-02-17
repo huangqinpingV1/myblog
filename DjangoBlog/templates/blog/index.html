@@ -12,7 +12,7 @@
             </header><!-- .archive-header -->
             	{% endif %}
 		{% for article in article_list  %}
-			{% load_article_detail True %}
+			{% load_article_detail article True %}
             {% endfor %}
 
             <nav id="nav-below" class="navigation" role="navigation">

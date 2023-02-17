@@ -43,6 +43,9 @@ INSTALLED_APPS = [
     'accounts',
     #增加comments应用，评论相关
     'comments',
+    #增加pagedown应用
+    'pagedown',
+
 ]
 
 MIDDLEWARE = [

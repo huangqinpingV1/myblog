@@ -7,4 +7,5 @@ def seo_processor(requests):
     return {
             'SITE_NAME':settings.SITE_NAME,
             'SITE_DESCRIPTION':settings.SITE_DESCRIPTION,
+            'SITE_BASE_URL': 'http://'+request.get_host()+'/',
             }

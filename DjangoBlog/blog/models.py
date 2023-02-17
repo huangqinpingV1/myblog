@@ -106,7 +106,7 @@ class Tag(models.Model):
 class Links(models.Model):
     """友情链接"""
     name = models.CharField("链接名称",max_length=30)
-    link = models.UrlField("链接地址")
+    link = models.URLField("链接地址")
     sequence = models.IntegerField("排序",unique = True)
     created_time = models.DateTimeField('创建时间',auto_now_add = True)
     last_mod_time = models.DateTimeField('修改时间',auto_now = True)
@@ -114,7 +114,7 @@ class Links(models.Model):
     class Meta:
         ordering = ['sequence']
         verbose_name ='友情链接'
-        verboser_name_plural  = verbose_name
+        verbose_name_plural  = verbose_name
 
     def __str__(self):
         return self.name

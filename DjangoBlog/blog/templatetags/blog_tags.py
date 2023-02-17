@@ -7,7 +7,7 @@ import markdown2
 from django.template.defaultfilters import stringfilter
 from django.utils.safestring import mark_safe
 import random
-from blog.models  import Article,Category,Tag
+from blog.models  import Article,Category,Tag,Links
 from django.utils.encoding import force_str
 import traceback
 #注册自定义标签
@@ -40,17 +40,20 @@ def custom_markdown(content):
     safe_mode = True,enable_attributes =False))"""    
 
 
-@register.inclusion_tag('blog/breadcrumb.html')
-def parsecategoryname(article):
+@register.inclusion_tag('blog/tags/breadcrumb.html')
+def load_breadcrumb(article):
     names  = article.get_category_tree()
     names.append((settings.SITE_NAME,'http://127.0.0.1:8080'))
     names = names[::-1]
     print("parsecategoryname() enter")
-    return {'names':names}
+    return {
+            'names':names,
+            'title': article.title
+            }
 
 
-@register.inclusion_tag('blog/articletaglist.html')
-def loadarticletags(article):
+@register.inclusion_tag('blog/tag/articletaglist.html')
+def load_articletags(article):
     print("loadarticletags() enter")
     tags = article.tags.all()
     tags_list =[]
@@ -61,23 +64,25 @@ def loadarticletags(article):
 
     return {'article_tags_list' : tags_list}
 
-@register.inclusion_tag('blog/sidebar.html')
-def loadsidebartags():
+@register.inclusion_tag('blog/tags/sidebar.html')
+def load_sidebar():
     print("loadsidebartags() enter")
     recent_articles = Article.objects.filter(status='p')[::settings.SIDEBAR_ARTICLE_COUNT]
     sidebar_categorys = Category.objects.all()
     most_read_articles = Article.objects.filter(status = 'p').order_by('-views')[::settings.SIDEBAR_ARTICLE_COUNT]
     dates = Article.objects.datetimes('created_time','month',order ='DESC')
+    links = Links.objects.all()
 
     #tag
     return {
             'recent_acticles':recent_articles,
             'sidebar_categorys':sidebar_categorys,
             'most_read_articles':most_read_articles,
-            'article_dates':dates
+            'article_dates':dates,
+            'sidabar_links':links
             }
 @register.inclusion_tag('blog/tags/article_meta_info.html')
-def loadarticlemetas(article):
+def load_articlemetas(article):
     print("loadarticlemetas() enter")
     return {'article':article}
 

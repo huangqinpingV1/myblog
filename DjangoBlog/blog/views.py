@@ -5,6 +5,7 @@ from blog.models import Article,Category,Tag
 from django.views.generic.list import  ListView
 from django.views.generic.detail import DetailView
 from django.conf import settings
+from django.core.exceptions import ObjectDoesNotExist
 #markdown编辑器包
 import markdown
 #通用显示视图
@@ -15,6 +16,8 @@ class ArticleListView(ListView):
     template_name = 'blog/index.html'
     #context_object_name 用于给上下文变量取名（模板中使用）
     context_object_name   = 'article_list'
+    #页面类型
+    page_type =  ''
     print("ArticleListView() constructor")
     
     
@@ -57,33 +60,55 @@ class ArticleDetailView(DetailView):
         obj.viewed()
         return obj
 
+    #重写get_context_data
+    def get_context_data(self,**kwargs):
+        artilceid = int(self.kwargs['article_id'])
+        
+        def get_article(id):
+            try:
+                return Article.objects.get(pk = id)
+            except ObjectDoesNotExist:
+                return None
+        
+        next_article =  get_article(article+1)
+        pre_article = get_article(article -1)
+        kwargs['next_article']  = next_article
+        kwargs['pre_article'] = pre_article
+
+        return super(ArticleDetail,self).get_context_data(**kwargs)
+
 class CategoryDetailView(ArticleListView):
     print("CategoryDetailView constructor")
+    page_type  ="分类目录归档"
     
     def get_queryset(self):
         categoryname  = self.kwargs['category_name']
         print("CateGoryDetailView get_queryset() enter")
-        self.page_description ='分类目录归档:·%s·' % categoryname
         article_list = Article.objects.filter(category__name=categoryname,status='p')
         return article_list
     
     def get_context_data(self,**kwargs):
         #增加额外数据
         print("CategoyDetailView get_context_data() enter")
-        kwargs['page_description'] = self.page_description
+        categoryname = self.kwargs['category_name']
+        kwargs['page_type'] =CategoryDetailView.page_type
+        kwargs['tag_name'] = categoryname
         return super(CategoryDetailView,self).get_context_data(**kwargs)
 
 class AuthorDetailView(ArticleListView):
+    page_type = '作者文章归档'
     print("AuthorDetailView constructor")
+
     def get_queryset(self):
         print("AuthorDetailView get_queryset()")
         author_name = self.kwargs['author_name']
-        self.page_description ='分类目录归档:·%s·' % author_name
         article_list = Article.objects.filter(author__username=author_name)
         return article_list
     
     def get_context_data(self,**kwargs):
-        kwargs['page_description'] = self.page_description
+        author_name = self.kwargs['author_name']
+        kwargs['page_type'] =AuthorDetailView.page_type
+        kwargs['tag_name'] = author_name
         return super(AuthorDetailView,self).get_context_data(**kwargs)
 
 class TagListView(ListView):
@@ -99,17 +124,19 @@ class TagListView(ListView):
             t.article_set.count()
 
 class TagDetailView(ArticleListView):
+    page_type ='分类标签归档'
     print("TagDetailView constrouctor")
     def get_queryset(self):
         print("TagDetailView get_queryset() enter")
         tag_name = self.kwargs['tag_name']
-        self.page_description = '分类标签: %s '% tag_name
         article_list = Article.objects.filter(tags__name = tag_name)
         return article_list
 
 def get_context_data(self,**kwargs):
     print("TagDetailView get_context_data()")
-    kwargs['page_description'] = self.page_description
+    tag_name = self.kwargs['tag_name']
+    kwargs['page_type'] = TagDetailView.page_type
+    kwargs['tag_name'] = tag_name
     return super(TagDetailView,self).get_context_data(**kwargs)
 
 

@@ -1,5 +1,5 @@
 {% load blog_tags %}
-<script>console.log("这里是article_meta_info.html");</script>
+<script>console.log("这里是article_meta_info.html")</script>
 <footer class="entry-meta">
     本条目发布于<a href="{{ article.get_absolute_url }}" title="下午10:54" rel="bookmark">
 
@@ -10,7 +10,7 @@
     。属于<a href="{{ article.category.get_absolute_url }}" rel="category tag">{{ article.category.name }}</a>分类，
     {% if article.tags.all %}
         被贴了
-        {% comment %}<a href="https://www.lylinux.org/tag/python" rel="tag">python</a>{% endcomment %}
+        
         {% for t in article.tags.all %}
             <a href="#" rel="tag">{{ t.name }}</a>
             {% if t != article.tags.all.last %}
@@ -21,7 +21,7 @@
         标签。
     {% endif %}
     <span class="by-author">作者是<span class="author vcard"><a class="url fn n"
-                                                             href="https://www.lylinux.org/author/admin"
+                                                             href="#"
                                                              title="查看所有由{{ article.author.username }}发布的文章"
                                                              rel="author">
         {{ article.author.username }}

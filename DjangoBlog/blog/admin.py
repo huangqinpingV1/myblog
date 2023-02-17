@@ -4,7 +4,7 @@ from pagedown.widgets import AdminPagedownWidget
 from django import forms
 
 class ArticleForm(forms.ModelForm):
-    body = forms.CharField(widget  = AdminPageDownWidget())
+    body = forms.CharField(widget  = AdminPagedownWidget())
 
     class Meta:
         model = Article
@@ -12,6 +12,7 @@ class ArticleForm(forms.ModelForm):
 
 
 class ArticleAdmin(admin.ModelAdmin):
+    form = ArticleForm
 
 # Register your models here.
 #注册模型

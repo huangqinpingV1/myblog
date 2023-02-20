@@ -9,7 +9,7 @@ from ..models import Comment
 from blog.models import Article
 
 register = template.Library()
-
+"""
 @register.simple_tag(name='get_comment_count')
 def GetCommentCount(parser,token):
     #查询对应文章的评论总数
@@ -18,3 +18,4 @@ def GetCommentCount(parser,token):
 @register.inclusion_tag('comments/tag/post_comment.html')
 def load_post_comment(article):
     return  {'article':article}
+"""    

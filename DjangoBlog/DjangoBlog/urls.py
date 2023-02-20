@@ -19,4 +19,6 @@ from django.urls import path,include
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('',include('blog.urls',namespace ='blog')),
+    #增加评论url
+    path('',include('comments.urls',namespace='comments')),
     ]

@@ -60,7 +60,9 @@ class Article(models.Model):
         self.views +=1
         self.save(update_fields =['views'])
 
-    
+    def  comment_list(self):
+        comment = self.comment_set.all()
+        parent_comments  = comments.filter(parent_comment  = None)
     
 #文章分类模型
 class Category(models.Model):

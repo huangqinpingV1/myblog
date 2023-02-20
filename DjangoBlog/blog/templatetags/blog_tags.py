@@ -9,6 +9,9 @@ from django.utils.safestring import mark_safe
 import random
 from blog.models  import Article,Category,Tag,Links
 from django.utils.encoding import force_str
+import hashlib
+import urllib
+from comments.models import Comment
 import traceback
 #注册自定义标签
 register = template.Library()
@@ -72,6 +75,7 @@ def load_sidebar():
     most_read_articles = Article.objects.filter(status = 'p').order_by('-views')[::settings.SIDEBAR_ARTICLE_COUNT]
     dates = Article.objects.datetimes('created_time','month',order ='DESC')
     links = Links.objects.all()
+    comment_list = Comment.objects.order_by('-id')[:settings.SIDEBAR_COMMENT_COUNT]
 
     #tag
     return {
@@ -79,7 +83,8 @@ def load_sidebar():
             'sidebar_categorys':sidebar_categorys,
             'most_read_articles':most_read_articles,
             'article_dates':dates,
-            'sidabar_links':links
+            'sidabar_links':links,
+            'sidebar_comments':comment_list,
             }
 @register.inclusion_tag('blog/tags/article_meta_info.html')
 def load_articlemetas(article):
@@ -91,6 +96,8 @@ def load_articlemetas(article):
 def load_article_detail(article,isindex):
     print("load_article_detail() enter")
     return {'article':article,'isindex':isindex}
+
+
 """
 @register.tag
 def parseCategoryName(parser,token):
@@ -116,5 +123,19 @@ class CategoryNametag(template.Node):
         print(self.names)
         return " > ".join(self.names)
 
-        #if self.category.parent_category:
-    """
+        #if self.category.parent_category:  
+"""
+
+@register.filter
+def gravatar_url(email,size =40):
+    email= email.encode('utf-8')
+    default = "xxxxxxxxxxx".encode('utf-8')
+
+    return "xxxxxxx/%s?%s" %(hashlib.md5(email.lower()).hexdigest(),urllib.parse.urlencode({'d':default,'s':str(size)}))
+
+@register.filter
+def gravatar(email,size= 40):
+    url = gravatar_url(email,size)
+    return make_safe('<img src =%s> height  ="%d" width= %d>' % (url,size,size))
+
+

@@ -18,4 +18,20 @@ def GetCommentCount(parser,token):
 @register.inclusion_tag('comments/tag/post_comment.html')
 def load_post_comment(article):
     return  {'article':article}
-"""    
+""" 
+@register.simple_tag
+def parse_commenttree(commentlist,comment):
+    print("parse_commenttree() 递归查找")
+    datas = []
+    def parse(c):
+        childs = commentlist.filter(parent_comment = c)
+        for child in childs:
+            datas.append(child)
+            parse(child)
+    parse(comment)
+    return datas
+
+@register.inclusion_tag('comments/tags/comment_item.html')
+def show_comment_item(comment,ischild):
+    depth = 1 if ischild else 2
+    return  {'comment_item':comment,'depth':depth}

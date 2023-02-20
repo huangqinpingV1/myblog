@@ -6,8 +6,6 @@ from django.views.generic.list import  ListView
 from django.views.generic.detail import DetailView
 from django.conf import settings
 from django.core.exceptions import ObjectDoesNotExist
-#markdown编辑器包
-import markdown
 #通用显示视图
 #调试调用栈
 import traceback

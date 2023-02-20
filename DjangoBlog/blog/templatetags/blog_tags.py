@@ -128,6 +128,7 @@ class CategoryNametag(template.Node):
 
 @register.filter
 def gravatar_url(email,size =40):
+    print("gravtar_url() enter")
     email= email.encode('utf-8')
     default = "xxxxxxxxxxx".encode('utf-8')
 
@@ -138,4 +139,8 @@ def gravatar(email,size= 40):
     url = gravatar_url(email,size)
     return make_safe('<img src =%s> height  ="%d" width= %d>' % (url,size,size))
 
+@register.simple_tag
+def query(qs,**kwargs):
+    return qs.filter(**kwargs)
 
+    

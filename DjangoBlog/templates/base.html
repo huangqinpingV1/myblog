@@ -38,8 +38,9 @@
 <link rel='stylesheet' id='twentytwelve-ie-css'  href='{% static 'blog/css/ie.css' %}' type='text/css' media='all' />
 <![endif]-->
 
-    <script type='text/javascript' src='{% static 'blog/js/jquery.js' %}' defer='defer'></script>
-    <script type='text/javascript' src='{% static 'blog/js/jquery-migrate.min.js' %}' defer='defer'></script>
+{% comment  %} <script type='text/javascript' src='{% static 'blog/js/jquery.js' %}' defer='defer'></script>
+<script type='text/javascript' src='{% static 'blog/js/jquery-migrate.min.js' %}' defer='defer'></script>{% endcomment %}
+ <script type="text/javascript" src ="{% static  'blog/js/jquery-3.1.1.js' %}"></script>
 </head>
 
 <body class="home blog custom-font-enabled">
@@ -150,7 +151,7 @@ var wpAutoTopSpeed = 1;</script>
 <link href="{% static 'highlight/styles/github-gist.css' %}" rel="stylesheet">
 <script type="application/javascript" src="{% static 'highlight/highlight.pack.js' %}"></script>
 <script>hljs.initHighlightingOnLoad();</script>
-
+<script src="{% static 'blog/js/blog.js' %}" type ="application/javascript"></script>
 </body>
 
 </html>

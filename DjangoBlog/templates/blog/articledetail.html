@@ -31,6 +31,7 @@
             {% if article.commentstatus == "o" %}
 	    {% comment %} {% load comment_tags %}  
 	    {% load_post_comment article from %} {% endcomment%}
+	    {% inclue 'comment/tags/comment_list.html' %}
 	    {% include 'comments/tags/post_comment.html' %}
             {% endif %}
     </div><!-- #primary -->

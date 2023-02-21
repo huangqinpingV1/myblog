@@ -21,4 +21,6 @@ urlpatterns = [
     path('',include('blog.urls',namespace ='blog')),
     #增加评论url
     path('',include('comments.urls',namespace='comments')),
+    #账号相关url
+    path('',include('accounts.urls',namespace='accounts')),
     ]

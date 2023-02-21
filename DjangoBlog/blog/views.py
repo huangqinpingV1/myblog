@@ -14,6 +14,8 @@ from django.views.generic import UpdateView
 from comments.forms import CommentForm
 from comments.models import Comment
 
+from django import forms
+
 class ArticleListView(ListView):
     #template_name 属性用于指定用哪个模板进行渲染
     template_name = 'blog/index.html'
@@ -73,17 +75,19 @@ class ArticleDetailView(DetailView):
             except ObjectDoesNotExist:
                 return None
         #评论相关
-        form = CommentForm()
+        comment_form = CommentForm()
         if self.request.user.is_authenticated():
+            comment_form.fields.update('email':forms.CharField(widget=forms.HiddenInput()),
+                    'name':forms.CharFiled(widget=forms.HiddenInput()),)
             user = self.requst.user
-            form.fields['email'].initial  = user.email
-            form.fields['name'].initial  = user.username
+            comment_form.fields['email'].initial  = user.email
+            comment_form.fields['name'].initial  = user.username
         
         article_comments = self.object.comment_set.all()
         print(article_comments)
 
-        kwargs['form']  = form
-        kwargs['article_comments'] =article_comments
+        kwargs['form']  = comment_form
+        kwargs['article_comments'] = article_comments
         kwargs['comment_count'] = len(article_comments) if article_comments else 0;
         #评论相关
         next_article =  get_article(article+1)

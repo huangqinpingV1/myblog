@@ -23,4 +23,5 @@ urlpatterns = [
     path('',include('comments.urls',namespace='comments')),
     #账号相关url
     path('',include('accounts.urls',namespace='accounts')),
+    path('',include('oauth.urls',namespace='oauth')),
     ]

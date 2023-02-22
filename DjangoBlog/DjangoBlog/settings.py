@@ -47,6 +47,8 @@ INSTALLED_APPS = [
     'comments',
     #增加pagedown应用
     'pagedown',
+    #增加oauth验证
+    'oauth',
 
 ]
 

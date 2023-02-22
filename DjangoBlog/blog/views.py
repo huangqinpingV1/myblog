@@ -13,7 +13,8 @@ import traceback
 from django.views.generic import UpdateView
 from comments.forms import CommentForm
 from comments.models import Comment
-
+from django.core.paginator import Paginator,PageNotAnInteger,EmptyPage
+from django.conf import settings
 from django import forms
 
 class ArticleListView(ListView):
@@ -23,6 +24,8 @@ class ArticleListView(ListView):
     context_object_name   = 'article_list'
     #页面类型
     page_type =  ''
+    paginate_by = settings.PAGINATE_BY
+    page_kwarg ='page'
     print("ArticleListView() constructor")
     
     

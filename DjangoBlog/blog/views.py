@@ -79,7 +79,8 @@ class ArticleDetailView(DetailView):
                 return None
         #评论相关
         comment_form = CommentForm()
-        if self.request.user.is_authenticated():
+        u = self.request.user
+        if self.request.user.is_authenticated:
             comment_form.fields.update({'email':forms.CharField(widget=forms.HiddenInput()),'name':forms.CharField(widget=forms.HiddenInput()),})
             user = self.requst.user
             comment_form.fields['email'].initial  = user.email

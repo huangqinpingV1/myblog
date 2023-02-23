@@ -78,7 +78,7 @@ def load_articletags(article):
     return {'article_tags_list' : tags_list}
 
 @register.inclusion_tag('blog/tags/sidebar.html')
-def load_sidebar():
+def load_sidebar(user):
     print("loadsidebartags() enter")
     recent_articles = Article.objects.filter(status='p')[::settings.SIDEBAR_ARTICLE_COUNT]
     sidebar_categorys = Category.objects.all()
@@ -95,6 +95,7 @@ def load_sidebar():
             'article_dates':dates,
             'sidabar_links':links,
             'sidebar_comments':comment_list,
+            'user':user
             }
 @register.inclusion_tag('blog/tags/article_meta_info.html')
 def load_articlemetas(article):

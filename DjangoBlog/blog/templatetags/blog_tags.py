@@ -43,6 +43,16 @@ def custom_markdown(content):
     safe_mode = True,enable_attributes =False))"""    
 
 
+@register.filter(is_safe=True)
+@stringfilter
+def truncatechars_content(content):
+    """
+    获得文章内容的摘要
+    """
+    from django.template.defaultfilters import truncatechars_html
+
+    return truncatechars_html(content, settings.ARTICLE_SUB_LENGTH)
+
 @register.inclusion_tag('blog/tags/breadcrumb.html')
 def load_breadcrumb(article):
     names  = article.get_category_tree()

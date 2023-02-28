@@ -15,6 +15,18 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path,include
+#增加站点地图
+from django.contrib.sitemaps.views import sitemap
+from .sitemap import StaticViewSitemap,ArticleSiteMap,CategorySiteMap,TagSiteMap,UserSiteMap
+
+sitemaps ={
+        'blog':ArticleSiteMap,
+        'Category':CategorySiteMap,
+        'Tag':TagSiteMap,
+        'User':UserSiteMap,
+        'static':StaticViewSitemap,
+        }
+
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -24,4 +36,5 @@ urlpatterns = [
     #账号相关url
     path('',include('accounts.urls',namespace='accounts')),
     path('',include('oauth.urls',namespace='oauth')),
+    path('sitemap.xml',sitemap,{'sitemaps':sitemaps},name='django.contrib.sitemaps.views.sitemap'),
     ]

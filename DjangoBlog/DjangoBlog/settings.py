@@ -37,6 +37,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    #站点地图相关
+    'django.contrib.sitemaps',
     #增加一个应用
     'django.contrib.sites',
     #增加blog应用

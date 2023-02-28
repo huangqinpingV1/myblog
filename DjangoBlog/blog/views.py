@@ -107,6 +107,10 @@ class CategoryDetailView(ArticleListView):
     def get_queryset(self):
         categoryname  = self.kwargs['category_name']
         print("CateGoryDetailView get_queryset() enter")
+        try:
+            categoryname = categoryname.split('/')[-1]
+        except:
+            pass
         article_list = Article.objects.filter(category__name=categoryname,status='p')
         return article_list
     
@@ -114,6 +118,10 @@ class CategoryDetailView(ArticleListView):
         #增加额外数据
         print("CategoyDetailView get_context_data() enter")
         categoryname = self.kwargs['category_name']
+        try:
+            categoryname = categoryname.split('/')[-1]
+        except:
+            pass
         kwargs['page_type'] =CategoryDetailView.page_type
         kwargs['tag_name'] = categoryname
         return super(CategoryDetailView,self).get_context_data(**kwargs)

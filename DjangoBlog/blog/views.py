@@ -16,6 +16,22 @@ from comments.models import Comment
 from django.core.paginator import Paginator,PageNotAnInteger,EmptyPage
 from django.conf import settings
 from django import forms
+from abc import ABCMeta,abstractmethod
+class SeoProcessor():
+    __metaclass__ = ABCMeta
+
+    @abstractmethod
+    def get_title(self):
+        pass
+    
+    @abstractmethod
+    def get_keywords(self):
+        pass
+
+    @abstractmethod
+    def get_description(self):
+        pass
+
 
 class ArticleListView(ListView):
     #template_name 属性用于指定用哪个模板进行渲染
@@ -33,7 +49,7 @@ class ArticleListView(ListView):
         print("ArtilceListView() __init__()")
         self.page_description =  ''
 
-class IndexView(ArticleListView):
+class IndexView(ArticleListView,SeoProcessor):
     print("Index() constructor")
     #template_name属性用于指定用哪个模板进行渲染
     #template_name = 'index.html'
@@ -41,7 +57,13 @@ class IndexView(ArticleListView):
 
     #context_object_name属性用于给上下文变量取名（在模板中使用该名字)
     #context_object_name = 'article_list'
-    
+    def get_title(self):
+        return "网站title"
+
+    def get_keywords(self):
+        pass
+
+
     #get_queryset是覆盖ListView的方法,由父类调用
     def get_queryset(self):
         print("IndexView get_queryset() enter")
@@ -70,7 +92,7 @@ class ArticleDetailView(DetailView):
 
     #重写get_context_data
     def get_context_data(self,**kwargs):
-        artilceid = int(self.kwargs['article_id'])
+        artilceid = int(self.kwargs[self.pk_url_kwarg])
         
         def get_article(id):
             try:

@@ -18,7 +18,7 @@ from django.urls import path,include
 #增加站点地图
 from django.contrib.sitemaps.views import sitemap
 from .sitemap import StaticViewSitemap,ArticleSiteMap,CategorySiteMap,TagSiteMap,UserSiteMap
-
+from .feeds import DjangoBlogFeed
 sitemaps ={
         'blog':ArticleSiteMap,
         'Category':CategorySiteMap,
@@ -37,4 +37,5 @@ urlpatterns = [
     path('',include('accounts.urls',namespace='accounts')),
     path('',include('oauth.urls',namespace='oauth')),
     path('sitemap.xml',sitemap,{'sitemaps':sitemaps},name='django.contrib.sitemaps.views.sitemap'),
+    path('feed',DjangoBlogFeed()),
     ]

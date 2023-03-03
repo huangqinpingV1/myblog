@@ -7,4 +7,5 @@ app_name ='accounts'
 urlpatterns =[
         path('login/',views.LoginView.as_view(success_url='/'),name='login',kwargs={'authenication_form':LoginForm}),
         path('register/',views.RegisterView.as_view(success_url='/'),name='register'),
+        path('logout/',views.logout,name='logout')
         ]

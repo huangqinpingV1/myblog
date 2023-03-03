@@ -75,7 +75,9 @@ class Article(models.Model):
         comment = self.comment_set.all()
         parent_comments  = comments.filter(parent_comment  = None)
 
-
+    def get_admin_url(self):
+        info = (self._meta.app_label,self._meta.model_name)
+        return reverse("admin:%s_%s_change" % info,args=(self.pk,))
 #文章分类模型
 class Category(models.Model):
     """文章分类"""

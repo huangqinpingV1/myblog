@@ -98,15 +98,16 @@ def load_sidebar(user):
             'user':user
             }
 @register.inclusion_tag('blog/tags/article_meta_info.html')
-def load_articlemetas(article):
+def load_articlemetas(article,user):
     print("loadarticlemetas() enter")
-    return {'article':article}
+    return {'article':article,
+            'user':user}
 
 
 @register.inclusion_tag('blog/tags/article_info.html')
-def load_article_detail(article,isindex):
+def load_article_detail(article,isindex,user):
     print("load_article_detail() enter")
-    return {'article':article,'isindex':isindex}
+    return {'article':article,'isindex':isindex,'user':user}
 
 
 """

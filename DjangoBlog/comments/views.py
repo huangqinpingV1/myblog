@@ -49,7 +49,7 @@ class CommentPostView(FormView):
 
         comment.save(True)
 
-        return HttpResponseRedirect(article.get_absolute_url())
+        return HttpResponseRedirect("%s#div-comment-%d" % (article.get_absolute_url(),comment.pk))
 
 
 

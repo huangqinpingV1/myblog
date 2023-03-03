@@ -35,7 +35,7 @@ class CommentForm(ModelForm):
     url  =forms.URLField(label='网址',required = False)
     if User.is_authenticated:
         email = forms.EmailField(label='电子邮箱',required = False)
-        name = forms.CharField(label='姓名')
+        name = forms.CharField(label='姓名',widget=forms.TextInput(attrs={'value':"",'size':"30",'maxlenght':"245",'aria-required':'true'}))
         parent_comment_id = forms.IntegerField(widget=forms.HiddenInput,required  = False)
 
     class Meta:

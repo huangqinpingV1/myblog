@@ -17,7 +17,7 @@ from django.core.paginator import Paginator,PageNotAnInteger,EmptyPage
 from django.conf import settings
 from django import forms
 from abc import ABCMeta,abstractmethod
-class SeoProcessor():
+"""class SeoProcessor():
     __metaclass__ = ABCMeta
 
     @abstractmethod
@@ -31,7 +31,7 @@ class SeoProcessor():
     @abstractmethod
     def get_description(self):
         pass
-
+"""
 
 class ArticleListView(ListView):
     #template_name 属性用于指定用哪个模板进行渲染
@@ -49,7 +49,7 @@ class ArticleListView(ListView):
         print("ArtilceListView() __init__()")
         self.page_description =  ''
 
-class IndexView(ArticleListView,SeoProcessor):
+class IndexView(ArticleListView):
     print("Index() constructor")
     #template_name属性用于指定用哪个模板进行渲染
     #template_name = 'index.html'
@@ -57,11 +57,6 @@ class IndexView(ArticleListView,SeoProcessor):
 
     #context_object_name属性用于给上下文变量取名（在模板中使用该名字)
     #context_object_name = 'article_list'
-    def get_title(self):
-        return "网站title"
-
-    def get_keywords(self):
-        pass
 
 
     #get_queryset是覆盖ListView的方法,由父类调用

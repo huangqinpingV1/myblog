@@ -8,7 +8,7 @@ from .forms import RegisterForm,LoginForm
 from django.contrib import auth
 from django.contrib.auth.forms import AuthenticationForm,UserCreationForm
 from django.contrib.auth import authenticate
-from django.contrib.auth.views import login,logout
+from django.contrib.auth import logout
 # Create your views here.
 class RegisterView(FormView):
     form_class = RegisterForm

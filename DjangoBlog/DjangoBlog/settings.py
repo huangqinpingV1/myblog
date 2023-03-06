@@ -56,7 +56,10 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    'django.middleware.cache.UpdateCacheMiddleware',
+    'django.middleware.gzip.GZipMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'django.middleware.http.ConditionalGetMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -154,6 +157,8 @@ LOGIN_URL = '/login/'
 TIME_FORMAT = '%Y-%m-%d %H:%M:%S'
 DATE_TIME_FORMAT = '%Y-%m-%d'
 SITE_NAME = 'Django Blog'
+#网站网址
+SITE_URL = 'http://127.0.0.1:8080'
 SITE_DESCRIPTION = '简单的Django应用.'
 SITE_SEO_DESCRIPTION ="Django Demo"
 ARTICLE_SUB_LENGTH = 300
@@ -167,6 +172,24 @@ SIDEBAR_ARTICLE_COUNT = 10
 SIDEBAR_COMMENT_COUNT =5
 #分页
 PAGINATE_BY = 10
+#http缓存时间
+CACHE_CONTROL_MAX_AGE  = 2592000
+#缓存设置,缓存进程运行在localhost端口11211.
+CACHES  = {
+        'default':{
+                'BACKEND':'django.core.cache.backends.memcached.PyMemcacheCache',
+                'LOCATION':'127.0.0.1:11211',
+            },
+        #本地缓存设置
+        'localmem':{
+                'BACKEND':'django.core.cache.backends.locmem.LocMemCache',
+                'LOCATION':'unique-snowflake',
+            }
+
+}
+CACHE_MIDDLE_EWARE_SECONDS =360000
+CACHE_MIDDLEWARE_KEY_PREFIX ='djangoblog'
+CACHE_MIDDLEWARE_ALIAS = 'default'
 
 OAUTH ={
     'sina':{

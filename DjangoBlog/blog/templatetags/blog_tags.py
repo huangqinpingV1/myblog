@@ -56,7 +56,7 @@ def truncatechars_content(content):
 @register.inclusion_tag('blog/tags/breadcrumb.html')
 def load_breadcrumb(article):
     names  = article.get_category_tree()
-    names.append((settings.SITE_NAME,'http://127.0.0.1:8080'))
+    names.append((settings.SITE_NAME,settings.SITE_URL))
     names = names[::-1]
     print("parsecategoryname() enter")
     return {

@@ -12,7 +12,7 @@ from django.contrib.auth import logout
 # Create your views here.
 class RegisterView(FormView):
     form_class = RegisterForm
-    template_name = 'account/registation_form.html'
+    template_name = 'account/registration_form.html'
 
     def form_valid(self,form):
         user =form.save(False)

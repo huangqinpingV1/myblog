@@ -18,12 +18,12 @@ class RegisterForm(UserCreationForm):
         super(RegisterForm,self).__init__(*args,**kwargs)
 
         self.fields['username'].widget = widgets.TextInput(attrs={'placeholder':'用户名',"class":"form-control"})
-        self.fields['email'].widget = widgets.EmailInput(atrrs={'placeholder':'邮箱',"class":"form-control"})
+        self.fields['email'].widget = widgets.EmailInput(attrs={'placeholder':'邮箱',"class":"form-control"})
         self.fields['password1'].widget = widget.PasswordInput(attrs={'placeholder':"密码","class":"form-control"})
-        self.fields['password2'].widget  =widget.PasswordInput(attrs={'placeholder':'确定密码',"class":"form-control"})
+        self.fields['password2'].widget  =widget.PasswordInput(attrs={'placeholder':'确认密码',"class":"form-control"})
 
-        class Meta:
-            model = get_user_model()
-            fields = ("username","email")
+    class Meta:
+        model = get_user_model()
+        fields = ("username","email")
 
 

@@ -10,7 +10,7 @@ import traceback
 class LoginForm(AuthenticationForm):
     def __init__(self,*args,**kwargs):
         super(LoginForm,self).__init__(*args,**kwargs)
-        self.fields['username'].widget = widgets.TextInput(attr={'placeholder':'用户名',"class":"form-control"})
+        self.fields['username'].widget = widgets.TextInput(attrs={'placeholder':'用户名',"class":"form-control"})
         self.fields['password'].widget = widgets.PasswordInput(attrs={'placeholder':'密码',"class":"form-control"})
 
 class RegisterForm(UserCreationForm):

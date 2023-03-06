@@ -39,8 +39,6 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     #站点地图相关
     'django.contrib.sitemaps',
-    #增加一个应用
-    'django.contrib.sites',
     #增加blog应用
     'blog',
     #增加accounts应用，账号相关
@@ -176,12 +174,8 @@ PAGINATE_BY = 10
 CACHE_CONTROL_MAX_AGE  = 2592000
 #缓存设置,缓存进程运行在localhost端口11211.
 CACHES  = {
-        'default':{
-                'BACKEND':'django.core.cache.backends.memcached.PyMemcacheCache',
-                'LOCATION':'127.0.0.1:11211',
-            },
         #本地缓存设置
-        'localmem':{
+        'default':{
                 'BACKEND':'django.core.cache.backends.locmem.LocMemCache',
                 'LOCATION':'unique-snowflake',
             }

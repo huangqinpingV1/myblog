@@ -17,6 +17,8 @@ from django.core.paginator import Paginator,PageNotAnInteger,EmptyPage
 from django.conf import settings
 from django import forms
 from abc import ABCMeta,abstractmethod
+from haystack.generic_views import SearchView
+from blog.forms import BlogSearchForm
 """class SeoProcessor():
     __metaclass__ = ABCMeta
 

@@ -38,4 +38,6 @@ urlpatterns = [
     path('',include('oauth.urls',namespace='oauth')),
     path('sitemap.xml',sitemap,{'sitemaps':sitemaps},name='django.contrib.sitemaps.views.sitemap'),
     path('feed',DjangoBlogFeed()),
+    #添加搜索相关功能
+    path('search',include('haystack.urls'),name='search'),
     ]

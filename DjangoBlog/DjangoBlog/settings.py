@@ -49,6 +49,8 @@ INSTALLED_APPS = [
     'pagedown',
     #增加oauth验证
     'oauth',
+    #站内搜索
+    'haystack',
 
 ]
 
@@ -87,7 +89,16 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'DjangoBlog.wsgi.application'
 
-
+#搜索相关设置
+HAYSTACK_CONNECTIONS ={
+        'default': {
+                #搜索引擎文件在blog应用下
+                'ENGINE':'blog.whoosh_cn_backend.WhooshEngine',
+                'PATH':os.path.join(BASE_DIR,'whoosh_index'),
+            }
+        }
+HAYSTACK_SIGNAL_PROCESSOR = 'haystack.signals.RealtimeSignalProcessor'
+#
 # Database
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
 

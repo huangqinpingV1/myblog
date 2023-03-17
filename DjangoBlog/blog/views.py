@@ -19,6 +19,9 @@ from django import forms
 from abc import ABCMeta,abstractmethod
 from haystack.generic_views import SearchView
 from blog.forms import BlogSearchForm
+from datetime
+from django.views.decorators.csrf import csrf_exempt
+import os
 """class SeoProcessor():
     __metaclass__ = ABCMeta
 
@@ -189,6 +192,27 @@ def get_context_data(self,**kwargs):
     kwargs['tag_name'] = tag_name
     return super(TagDetailView,self).get_context_data(**kwargs)
 
+
+#文件上传功能
+@csrf_exempt
+def fileupload(request):
+    if request.method == 'POST':
+        fname =''
+        timestr = datetime.datetime.now().strftime("%Y/%m/%d")
+        basepath = os.path.join(r'/var/www/resource/image/',timestr)
+        if not os.path.exists(basepath):
+            os.makedirs(basepath)
+        for filename ,file in request.FILES.iteritems():
+            fname = filename
+            savepath = os.path.join(basepath,filename)
+            with open(savepath,"wb+") as wfile:
+                for chunk in file.chunks():
+                    wfile.write(chunk)
+        
+        return HttpResponse('http://1.12.250.75/'+'image/'+timestr+'/' + fname)
+     
+    else:
+        return HttpResponse("only for post")
 
 class MystView():
     print("MyTestView constructor")

@@ -19,7 +19,7 @@ from django import forms
 from abc import ABCMeta,abstractmethod
 from haystack.generic_views import SearchView
 from blog.forms import BlogSearchForm
-from datetime
+import datetime
 from django.views.decorators.csrf import csrf_exempt
 import os
 """class SeoProcessor():

@@ -15,4 +15,4 @@ Quit the server with CONTROL-C.
 [09/Feb/2023 02:28:08] "GET /static/blog/css/bootstrap.min.css HTTP/1.1" 200 121200
 [09/Feb/2023 02:28:08] "GET /static/blog/js/jquery.min.js HTTP/1.1" 200 97163
 [09/Feb/2023 02:28:23] "GET / HTTP/1.1" 200 4715
-#登陆注册页跑通
+#登陆注册功能OK

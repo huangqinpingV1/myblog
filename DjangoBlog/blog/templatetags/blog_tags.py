@@ -65,7 +65,7 @@ def load_breadcrumb(article):
             }
 
 
-@register.inclusion_tag('blog/tag/articletaglist.html')
+@register.inclusion_tag('blog/tag/article_tag_list.html')
 def load_articletags(article):
     print("loadarticletags() enter")
     tags = article.tags.all()

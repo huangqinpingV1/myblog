@@ -171,6 +171,7 @@ SITE_NAME = 'Django Blog'
 SITE_URL = 'http://127.0.0.1:8080'
 SITE_DESCRIPTION = '简单的Django应用.'
 SITE_SEO_DESCRIPTION ="Django Demo"
+SITE_SEO_KEYWORDS ="linux,appache,mysql,服务器,ubuntu,shell,web,csharp,.net,asp,mac,switf"
 ARTICLE_SUB_LENGTH = 300
 #新增bootstrap颜色样式
 BOOTSTRAP_COLOR_TYPES = [

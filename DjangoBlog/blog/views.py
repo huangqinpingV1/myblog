@@ -37,7 +37,7 @@ from blog.forms import BlogSearchForm
 
 class ArticleListView(ListView):
     #template_name 属性用于指定用哪个模板进行渲染
-    template_name = 'blog/index.html'
+    template_name = 'blog/article_index.html'
     #context_object_name 用于给上下文变量取名（模板中使用）
     context_object_name   = 'article_list'
     #页面类型
@@ -76,7 +76,7 @@ class IndexView(ArticleListView):
 
 class ArticleDetailView(DetailView):
     print("ArticleDetailView() enter")
-    template_name =  'blog/articledetail.html'
+    template_name =  'blog/article_detail.html'
     model = Article
     pk_url_kwarg = 'article_id'
     context_object_name  = "article"

@@ -199,14 +199,14 @@ def fileupload(request):
     if request.method == 'POST':
         fname =''
         timestr = datetime.datetime.now().strftime("%Y/%m/%d")
-        basepath = os.path.join(r'/var/www/resource/image/',timestr)
+        basepath = os.path.join(r'/var/www/resouce/image/',timestr)
         if not os.path.exists(basepath):
             os.makedirs(basepath)
-        for filename ,file in request.FILES.iteritems():
+        for filename in request.FILES:    
             fname = filename
             savepath = os.path.join(basepath,filename)
             with open(savepath,"wb+") as wfile:
-                for chunk in file.chunks():
+                for chunk in request.FILES[filename].chunks():
                     wfile.write(chunk)
         
         return HttpResponse('http://1.12.250.75/'+'image/'+timestr+'/' + fname)

@@ -37,10 +37,8 @@ def datetimeformat(data):
 @stringfilter
 def custom_markdown(content):
     print("custom_markdown() enter")
-    return mark_safe(markdown2.markdown(force_str(content),extras=["fenced-code-blocks","cuddled_lists","metadata","tables","spoiler"]))
-
-    """return mark_safe(markdown.markdown(content,extensions  =['markdown.extensions.fenced_code','markdown.extensions.codehilite'],
-    safe_mode = True,enable_attributes =False))"""    
+    from DjangoBlog.common_markdown import common_markdown
+    return mark_safe(common_markdown.get_markdown(content))
 
 
 @register.filter(is_safe=True)
@@ -86,7 +84,7 @@ def load_sidebar(user):
     dates = Article.objects.datetimes('created_time','month',order ='DESC')
     links = Links.objects.all()
     comment_list = Comment.objects.order_by('-id')[:settings.SIDEBAR_COMMENT_COUNT]
-
+    show_adsense  = settings.SHOW_GOOGLE_ADSENSE
     #tag
     return {
             'recent_acticles':recent_articles,
@@ -95,7 +93,8 @@ def load_sidebar(user):
             'article_dates':dates,
             'sidabar_links':links,
             'sidebar_comments':comment_list,
-            'user':user
+            'user':user,
+            'show_adsense':show_adsense,
             }
 @register.inclusion_tag('blog/tags/article_meta_info.html')
 def load_articlemetas(article,user):

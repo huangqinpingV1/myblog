@@ -5,7 +5,7 @@ from django.conf import settings
 
 def seo_processor(requests):
     return {
-            'SHOW_GOOGLE_ADSENSE':setting.SHOW_GOOGLE_ADSENSE
+            'SHOW_GOOGLE_ADSENSE':settings.SHOW_GOOGLE_ADSENSE,
             'SITE_NAME':settings.SITE_NAME,
             'SITE_DESCRIPTION':settings.SITE_DESCRIPTION,
             'SITE_SEO_DESCRIPTION':settings.SITE_SEO_DESCRIPTION,

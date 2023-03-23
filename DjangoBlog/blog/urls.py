@@ -14,5 +14,6 @@ urlpatterns  =[
     path('author/<author_name>',views.AuthorDetailView.as_view(),name='author_detail'),
     path('tags/<tag_name>',views.TagDetailView.as_view(),name='tag_detail'),
     path('blogpage/<year>/<month>/<day>/<page_id>-<slug>.html',views.ArticleDetailView.as_view(),name ='pagedetail'),
+    path('upload',views.fileupload,name='upload'),
     ]
 

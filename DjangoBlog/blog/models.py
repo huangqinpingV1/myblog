@@ -3,6 +3,7 @@ from django.db import models
 from django.urls import reverse
 from django.conf import settings
 from uuslug import slugify
+from DjangoBlog.spider_notify import sipder_notify
 # Create your models here.
 #文章模型
 class Article(models.Model):
@@ -62,6 +63,13 @@ class Article(models.Model):
         #self.summary = self.summary or self.body[:settings.ARTICLE_SUB_LENGTH]
         if not self.slug or self.slug== 'no-slug' or not self.id:
             self.slug = slugify(self.title)
+
+        try:
+            notify = sipder_notify()
+            notify.notify(self.get_absolute_url())
+        except Exception as e:
+            print(e)
+
         super().save(*args,**kwargs)
 
 
@@ -98,6 +106,14 @@ class Category(models.Model):
     def __str__(self):
         return self.name
 
+    def save(self,*args,**kwargs):
+        try:
+            notify = sipder_notify()
+            notify.notify(self.get_absolute_url())
+        except Exception as e:
+            print(e)
+        super().save(*args,**kwargs)    
+
 #文章标签模型 
 class Tag(models.Model):
     """文章标签"""
@@ -118,6 +134,14 @@ class Tag(models.Model):
         ordering =  ['name']
         verbose_name = "标签"
         verbose_name_plural  = verbose_name
+
+    def saave(self,*args,**kwargs):
+        try:
+            notify = sipder_notify()
+            notify.notify(self.get_absolute_url())
+        except Exception as e:
+            print(e)
+        super().save(*args,**kwargs)    
 
 class Links(models.Model):
     """友情链接"""

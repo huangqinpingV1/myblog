@@ -15,5 +15,6 @@ urlpatterns  =[
     path('tags/<tag_name>',views.TagDetailView.as_view(),name='tag_detail'),
     path('blogpage/<year>/<month>/<day>/<page_id>-<slug>.html',views.ArticleDetailView.as_view(),name ='pagedetail'),
     path('upload',views.fileupload,name='upload'),
+    path('refresh',views.refresh_memcache,name='refresh')
     ]
 

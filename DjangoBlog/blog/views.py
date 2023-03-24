@@ -22,6 +22,7 @@ from blog.forms import BlogSearchForm
 import datetime
 from django.views.decorators.csrf import csrf_exempt
 import os
+from django.contrib.auth.decorators import login_required
 """class SeoProcessor():
     __metaclass__ = ABCMeta
 
@@ -185,12 +186,12 @@ class TagDetailView(ArticleListView):
         article_list = Article.objects.filter(tags__name = tag_name)
         return article_list
 
-def get_context_data(self,**kwargs):
-    print("TagDetailView get_context_data()")
-    tag_name = self.kwargs['tag_name']
-    kwargs['page_type'] = TagDetailView.page_type
-    kwargs['tag_name'] = tag_name
-    return super(TagDetailView,self).get_context_data(**kwargs)
+    def get_context_data(self,**kwargs):
+      print("TagDetailView get_context_data()")
+      tag_name = self.kwargs['tag_name']
+      kwargs['page_type'] = TagDetailView.page_type
+      kwargs['tag_name'] = tag_name
+      return super(TagDetailView,self).get_context_data(**kwargs)
 
 
 #文件上传功能
@@ -213,6 +214,14 @@ def fileupload(request):
      
     else:
         return HttpResponse("only for post")
+
+@login_required
+def refresh_memcache(requst):
+    try:
+        result = os.open('  service memche restart ').readlin()
+        return HttpResponse(result)
+    except Exception as e:
+        return HttpResponse(e)
 
 class MystView():
     print("MyTestView constructor")

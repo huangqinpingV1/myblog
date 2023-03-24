@@ -168,7 +168,7 @@ LOGIN_URL = '/login/'
 #TimeFormat
 TIME_FORMAT = '%Y-%m-%d %H:%M:%S'
 DATE_TIME_FORMAT = '%Y-%m-%d'
-SITE_NAME = 'Django Blog'
+SITE_NAME = '测试一下'
 #网站网址
 SITE_URL = 'http://127.0.0.1:8080'
 SITE_DESCRIPTION = '简单的Django应用.'
@@ -198,7 +198,7 @@ CACHES  = {
             }
 
 }
-CACHE_MIDDLE_EWARE_SECONDS =360000
+CACHE_MIDDLE_EWARE_SECONDS =60*60*10
 CACHE_MIDDLEWARE_KEY_PREFIX ='djangoblog'
 CACHE_MIDDLEWARE_ALIAS = 'default'
 
@@ -210,4 +210,6 @@ OAUTH ={
         }        
 }
 
-#cache setting
+
+SITE_ID = 2
+BAIDU_NOTIFY_URL="http://data.zz.baidu.com/urls?site=https://www.lylinux.net&token=1uAOGrMsUm5syDGn&type=original"

@@ -1,7 +1,7 @@
 {% extends 'share_layout/base.html' %}
 {% load blog_tags %}
 {% block header %}
-    <% if tag_name  %>
+{% if tag_name  %}
     <title>{{ tag_name }} | {{ SITE_DESCRIPTION }}</title>
     <meta name="description" content="{{page_type}}:{{tag_name}}"/>
     {% else %}

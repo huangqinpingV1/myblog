@@ -174,7 +174,7 @@ SITE_SEO_DESCRIPTION ="Django Demo"
 SITE_SEO_KEYWORDS ="linux,appache,mysql,服务器,ubuntu,shell,web,csharp,.net,asp,mac,switf"
 ARTICLE_SUB_LENGTH = 300
 
-SHOW_GOOGLE_ADSENSE=True
+SHOW_GOOGLE_ADSENSE = True
 #新增bootstrap颜色样式
 BOOTSTRAP_COLOR_TYPES = [
         'default','primary','success','info','warning','danger'

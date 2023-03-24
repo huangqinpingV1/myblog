@@ -85,7 +85,7 @@ def load_sidebar(user):
     links = Links.objects.all()
     comment_list = Comment.objects.order_by('-id')[:settings.SIDEBAR_COMMENT_COUNT]
     show_adsense  = settings.SHOW_GOOGLE_ADSENSE
-    #tag
+
     return {
             'recent_acticles':recent_articles,
             'sidebar_categorys':sidebar_categorys,
@@ -94,7 +94,7 @@ def load_sidebar(user):
             'sidabar_links':links,
             'sidebar_comments':comment_list,
             'user':user,
-            'show_adsense':show_adsense,
+            'show_adsense':show_adsense
             }
 @register.inclusion_tag('blog/tags/article_meta_info.html')
 def load_articlemetas(article,user):

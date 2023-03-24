@@ -52,6 +52,8 @@ INSTALLED_APPS = [
     'oauth',
     #站内搜索
     'haystack',
+    #site app
+    'django.contrib.sites'
 
 ]
 

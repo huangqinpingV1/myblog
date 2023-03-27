@@ -24,7 +24,8 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-qt@1a8ed_^g_@ha9s2zpineqra#+_3c0=-#x&a1-v4@#x1gpp0'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+#DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = ['1.12.250.75','localhost']
 
@@ -222,3 +223,5 @@ EMAIL_PORT= 587
 EMAIL_HOST_USER = os.environ.get('DJANGO_EMAIL_USER')
 EMAIL_HOST_PASSWORD = os.environ.get('DJANGO_EMAIL_PASSWORD')
 DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
+SERVER_EMAIL = os.environ.get('DJANGO_EMAIL_USER')
+ADMINS = [('huangqinping','xxxxxxx@qq.com')]

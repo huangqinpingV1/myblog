@@ -68,8 +68,8 @@ class IndexView(ArticleListView):
     #get_queryset是覆盖ListView的方法,由父类调用
     def get_queryset(self):
         print("IndexView get_queryset() enter")
-        article_list = Article.objects.filter(status='p')
-        #for article in article_list:
+        article_list = Article.objects.filter(type='a',status='p')
+        #for article in article_list:0
         #    article.body = article.body[0:settings.ARTICLE_SUB_LENGTH]
 
         return article_list
@@ -218,7 +218,7 @@ def fileupload(request):
 @login_required
 def refresh_memcache(requst):
     try:
-        result = os.open('  service memche restart ').readlin()
+        result = os.open('  service memcached restart ').readlin()
         return HttpResponse(result)
     except Exception as e:
         return HttpResponse(e)

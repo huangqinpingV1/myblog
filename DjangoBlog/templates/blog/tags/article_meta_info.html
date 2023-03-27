@@ -7,6 +7,7 @@
           datetime="{{ article.created_time }}">
         {% datetimeformat article.created_time %}</time>
 </a>
+	{% if article.type == 'a' %}
     。属于<a href="{{ article.category.get_absolute_url }}" rel="category tag">{{ article.category.name }}</a>分类，
     {% if article.tags.all %}
         被贴了
@@ -19,6 +20,7 @@
         {% endfor %}
 
         标签。
+    {% endif %}
     {% endif %}
     <span class="by-author">作者是<span class="author vcard"><a class="url fn n"
 								href="{{article.author.get_absolute_url}}"

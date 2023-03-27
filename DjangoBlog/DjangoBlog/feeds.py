@@ -5,7 +5,6 @@ from blog.models import Article
 from django.conf import settings
 from django.utils.feedgenerator import  Rss201rev2Feed
 from .common_markdown import common_markdown
-from django.utils.safestring import mark_safe
 from django.contrib.auth import get_user_model
 from django.contrib.auth.models import User
 from django.contrib.sites.models import Site
@@ -30,7 +29,7 @@ class DjangoBlogFeed(Feed):
         return item.title
 
     def item_description(self,item):
-        return mark_safe(common_markdown.get_markdown(item.body))
+        return common_markdown.get_markdown(item.body)
 
     def feed_copyright(self):
         return "Copyright© 2023" + settings.SITE_NAME

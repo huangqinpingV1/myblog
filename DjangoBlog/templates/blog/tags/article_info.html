@@ -1,7 +1,7 @@
 {% load blog_tags %}
 <script>console.log("这里是article_info.html")</script>
 <article id="post-{{ article.pk }}"
-         class="post-3815 post type-post status-publish format-standard hentry category-python tag-python" itemscope itemtype="http://schema.org/Article">
+         class="post-3815 post type-post status-publish format-standard hentry" itemscope itemtype="http://schema.org/Article">
     <header class="entry-header">
 
         <h1 class="entry-title" itemprop="name">
@@ -29,9 +29,11 @@
             </div>
         </div><!-- .comments-link -->
         <br/>
+	{% if article.type == 'a'  %}
         {% if not isindex %}
             {% load_breadcrumb article %}
         {% endif %}
+	{% endif %}
     </header><!-- .entry-header -->
 
     <div class="entry-content" itemprop="articleBody">

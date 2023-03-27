@@ -63,12 +63,11 @@ class Article(models.Model):
         #self.summary = self.summary or self.body[:settings.ARTICLE_SUB_LENGTH]
         if not self.slug or self.slug== 'no-slug' or not self.id:
             self.slug = slugify(self.title)
-
-        try:
-            notify = sipder_notify()
-            notify.notify(self.get_absolute_url())
-        except Exception as e:
-            print(e)
+            try:
+                notify = sipder_notify()
+                notify.notify(self.get_absolute_url())
+            except Exception as e:
+                print(e)
 
         super().save(*args,**kwargs)
 

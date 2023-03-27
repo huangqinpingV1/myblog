@@ -4,6 +4,7 @@ from django.urls import reverse
 from django.conf import settings
 from uuslug import slugify
 from DjangoBlog.spider_notify import sipder_notify
+from django.contrib.sites.models import Site
 # Create your models here.
 #文章模型
 class Article(models.Model):
@@ -65,7 +66,7 @@ class Article(models.Model):
             self.slug = slugify(self.title)
             try:
                 notify = sipder_notify()
-                notify.notify(self.get_absolute_url())
+                notify.notify(self.get_full_url())
             except Exception as e:
                 print(e)
 
@@ -84,6 +85,10 @@ class Article(models.Model):
     def get_admin_url(self):
         info = (self._meta.app_label,self._meta.model_name)
         return reverse("admin:%s_%s_change" % info,args=(self.pk,))
+
+    def get_full_url(self):
+        site = Site.objects.get_current().domain
+        article_url = "https://{site}{path}".format(site=site,path=self.get_absolute_url())
 #文章分类模型
 class Category(models.Model):
     """文章分类"""

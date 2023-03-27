@@ -10,6 +10,7 @@ from django.urls import reverse
 from django.contrib.auth.models import User
 from django.contrib.auth import get_user_model
 from accounts.models import BlogUser
+from django import forms
 
 class CommentPostView(FormView):
     form_class = CommentForm
@@ -18,12 +19,19 @@ class CommentPostView(FormView):
     def get(self,request,*args,**kwargs):
         article_id = self.kwargs['article_id']
         url = reverse('blog:detail',kwargs ={'article_id':article_id})
-        return HttpResponseRedirect(url)
+        return HttpResponseRedirect(url + "#comments")
 
 
     def form_invalid(self,form):
         article_id  = self.kwargs['article_id']
         article = Article.objects.get(pk = article_id)
+        u = self.request.user
+
+        if self.request.user.is_authenticated:
+            form.fields.update({'email':forms.CharField(widget=forms.HiddenInput()),'name':forms.CharField(widget=forms.HiddenInput())})
+            user =self.request.user
+            form.fields['email'].initial = user.email
+            form.fields['name'].initial = user.username
 
         return self.render_to_response({'form':form,'article':article})
 
@@ -36,7 +44,7 @@ class CommentPostView(FormView):
         if not self.request.user.is_authenticated():
             comment = form.save(False)
             comment.article = article
-            user = get_user_model().objects.create_user(username=username,email=email,password = None)
+            user = get_user_model().objects.create_user(username=username,email=email,password = None,nickname=username)
         
         author_id = user.pk
 

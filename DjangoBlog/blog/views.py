@@ -218,8 +218,12 @@ def fileupload(request):
 @login_required
 def refresh_memcache(requst):
     try:
-        result = os.open('  service memcached restart ').readlin()
-        return HttpResponse(result)
+        if request.user.is_superuser:
+            result = os.open('  service memcached restart ').readline()
+            return HttpResponse(result)
+        else:
+            from django.http import HttpResponseForbidden
+            return HttpResponseForbidden()
     except Exception as e:
         return HttpResponse(e)
 

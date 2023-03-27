@@ -9,6 +9,9 @@ from django.contrib import auth
 from django.contrib.auth.forms import AuthenticationForm,UserCreationForm
 from django.contrib.auth import authenticate
 from django.contrib.auth import logout
+from django.views.decorators.cache import never_cache
+from django.shortcuts import redirect
+
 # Create your views here.
 class RegisterView(FormView):
     form_class = RegisterForm
@@ -20,9 +23,10 @@ class RegisterView(FormView):
         user.save(True)
         return HttpResponseRedirect('/')
 
+@never_cache
 def LogOut(requests):
-    logout(reqiest=requests)
-    return HttpResponseRedirect('/')
+    logout(reqiest=requests,next_page='index')
+    return redirect('index')
 
 
 class LoginView(FormView):

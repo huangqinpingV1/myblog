@@ -87,7 +87,7 @@ def load_sidebar(user):
     show_adsense  = settings.SHOW_GOOGLE_ADSENSE
 
     return {
-            'recent_acticles':recent_articles,
+            'recent_articles':recent_articles,
             'sidebar_categorys':sidebar_categorys,
             'most_read_articles':most_read_articles,
             'article_dates':dates,

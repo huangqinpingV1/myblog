@@ -199,11 +199,11 @@ CACHES  = {
             }
 
 }
-CACHE_MIDDLE_EWARE_SECONDS =60*60*10
+CACHE_MIDDLE_WARE_SECONDS =60*60*10
 CACHE_MIDDLEWARE_KEY_PREFIX ='djangoblog'
 CACHE_MIDDLEWARE_ALIAS = 'default'
 
-OAUTH ={
+OAHUTH ={
     'sina':{
         'appkey':'3161614143',
         'appsecret':'ee17c099317f872eeddb25204ea46721',

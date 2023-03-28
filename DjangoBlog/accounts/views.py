@@ -25,7 +25,7 @@ class RegisterView(FormView):
 
 @never_cache
 def LogOut(requests):
-    logout(reqiest=requests,next_page='index')
+    logout(request=requests,next_page='index')
     return redirect('index')
 
 
@@ -37,7 +37,7 @@ class LoginView(FormView):
         form =AuthenticationForm(data=self.request.POST,request=self.request)
 
         if form.is_valid():
-            auth.login(self.requst,form.get_user())
+            auth.login(self.request,form.get_user())
             
             return HttpResponseRedirect('/')
 

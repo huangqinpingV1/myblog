@@ -46,7 +46,7 @@ class Comment(models.Model):
        msg.conent_subtype ="html"
 
        #线程中执行
-       _thread.start_new_thread(self.send_comment_email,(msg))
+       _thread.start_new_thread(self.send_comment_email,(msg,))
        if self.parent_comment:
           html_content = """
           您在 <a href="%s" rel="bookmark">%s</a> 的评论 <br/> %s <br/> 收到回复啦.快去看看吧
@@ -58,7 +58,7 @@ class Comment(models.Model):
           msg = EmailMultiAlternatives(subject,thml_content,from_email="no_reply@lynux.net",to=[tomail])
           msg.conent_subtype ="html"
           #线程中执行
-          _thread.start_new_thread(self.send_comment_email,(msg))
+          _thread.start_new_thread(self.send_comment_email,(msg,))
 
     def __str__(self):
         return self.body

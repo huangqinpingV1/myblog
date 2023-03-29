@@ -40,7 +40,7 @@ urlpatterns = [
     path('',include('accounts.urls',namespace='accounts')),
     path('',include('oauth.urls',namespace='oauth')),
     path('sitemap.xml',cache_page(60*60*10)(sitemap),{'sitemaps':sitemaps},name='django.contrib.sitemaps.views.sitemap'),
-    path('feed',cache_page(60*60*10)(DjangoBlogFeed())),
+    path('feed/',cache_page(60*60*10)(DjangoBlogFeed())),
     #添加搜索相关功能
     path('search',include('haystack.urls'),name='search'),
     ]

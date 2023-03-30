@@ -2,9 +2,14 @@
 # encoding: utf-8
 from .models import Category,Article,Tag
 from django.conf import settings
-
+from django.core.cache import cache
 def seo_processor(requests):
-    return {
+    key = 'seo_processor'
+    value = cache.get(key)
+    if value:
+        return value
+    else:
+        value= {
             'SHOW_GOOGLE_ADSENSE':settings.SHOW_GOOGLE_ADSENSE,
             'SITE_NAME':settings.SITE_NAME,
             'SITE_DESCRIPTION':settings.SITE_DESCRIPTION,
@@ -15,3 +20,5 @@ def seo_processor(requests):
             'nav_category_list':Category.objects.all(),
             'nav_pages':Article.objects.filter(type='p',status='p'),
             }
+        cache.set(key,value,60*60*10)
+        return value

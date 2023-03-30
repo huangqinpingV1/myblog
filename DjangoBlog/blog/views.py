@@ -89,17 +89,13 @@ class ArticleDetailView(DetailView):
         print("ArticleDetailView get_object() enter")
         obj = super(ArticleDetailView,self).get_object()
         obj.viewed()
+        self.object = obj
         return obj
 
     #重写get_context_data
     def get_context_data(self,**kwargs):
         artilceid = int(self.kwargs[self.pk_url_kwarg])
         
-        def get_article(id):
-            try:
-                return Article.objects.get(pk = id)
-            except ObjectDoesNotExist:
-                return None
         #评论相关
         comment_form = CommentForm()
         u = self.request.user
@@ -116,10 +112,9 @@ class ArticleDetailView(DetailView):
         kwargs['article_comments'] = article_comments
         kwargs['comment_count'] = len(article_comments) if article_comments else 0;
         #评论相关
-        next_article =  get_article(article+1)
-        pre_article = get_article(article -1)
-        kwargs['next_article']  = next_article
-        kwargs['pre_article'] = pre_article
+        
+        kwargs['next_article']  = self.object.next_article
+        kwargs['pre_article'] = self.object.pre_article
 
         return super(ArticleDetail,self).get_context_data(**kwargs)
 

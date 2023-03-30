@@ -5,9 +5,34 @@ from django.conf import settings
 from uuslug import slugify
 from DjangoBlog.spider_notify import sipder_notify
 from django.contrib.sites.models import Site
+from DjangoBlog.utils import cache_decorator
+from django.utils.functional import cached_property
 # Create your models here.
+
+class BaseModel(models.Model):
+    def save(self,*args,**kwargs):
+        super().save(*args,**kwargs)
+
+        if 'update_fields' in kwargs and len(kwargs['update_fields']) == 1 and kwargs['update_field'][0]  == 'views':
+            return 
+        try:
+            notify  = sipder_notify()
+            notify_url = self.get_full_url()
+            notify.baidu_notify(notify_url)
+        except Exception as ex:
+            print(ex)
+    
+
+    def get_full_url(self):
+        site = Site.objects.get_current().domain
+        url = "https://{site}{path}".format(site=site,path=self.get_absoulute_url())
+        return url
+
+    class Meta:
+        abstract = True
+
 #文章模型
-class Article(models.Model):
+class Article(BaseModel):
     """文章"""
     STATUS_CHOICES =(('d','草稿'),('p','发表'))
     COMMENT_STATUS =(('o',"打开"),('c','关闭'))
@@ -48,7 +73,7 @@ class Article(models.Model):
             'month':self.created_time.month,
             'day':self.created_time.day,
             'slug':self.slug})
-
+    @cache_decorator(60*60*10)
     def get_category_tree(self):
         names =[]
 
@@ -64,12 +89,6 @@ class Article(models.Model):
         #self.summary = self.summary or self.body[:settings.ARTICLE_SUB_LENGTH]
         if not self.slug or self.slug== 'no-slug' or not self.id:
             self.slug = slugify(self.title)
-            try:
-                notify = sipder_notify()
-                notify.notify(self.get_full_url())
-            except Exception as e:
-                print(e)
-
         super().save(*args,**kwargs)
 
 
@@ -77,7 +96,7 @@ class Article(models.Model):
     def viewed(self):
         self.views +=1
         self.save(update_fields =['views'])
-
+    @cache_decorator(60*60*10)
     def  comment_list(self):
         comment = self.comment_set.all()
         parent_comments  = comments.filter(parent_comment  = None)
@@ -85,12 +104,17 @@ class Article(models.Model):
     def get_admin_url(self):
         info = (self._meta.app_label,self._meta.model_name)
         return reverse("admin:%s_%s_change" % info,args=(self.pk,))
+    @cached_property
+    def next_property(self):
+        #下一篇
+        return Article.objects.filter(id__gt=self.id,status=0).order_by('id').first()
 
-    def get_full_url(self):
-        site = Site.objects.get_current().domain
-        article_url = "https://{site}{path}".format(site=site,path=self.get_absolute_url())
+    @cached_property
+    def pre_article(self):
+        #前一篇
+        return Article.objects.filter(id__gt=self.id,status=0).first()
 #文章分类模型
-class Category(models.Model):
+class Category(BaseModel):
     """文章分类"""
     name = models.CharField('分类名',max_length =30)
     created_time = models.DateTimeField('创建时间',auto_now_add = True)
@@ -110,16 +134,10 @@ class Category(models.Model):
     def __str__(self):
         return self.name
 
-    def save(self,*args,**kwargs):
-        try:
-            notify = sipder_notify()
-            notify.notify(self.get_absolute_url())
-        except Exception as e:
-            print(e)
-        super().save(*args,**kwargs)    
+    
 
 #文章标签模型 
-class Tag(models.Model):
+class Tag(BaseModel):
     """文章标签"""
     name = models.CharField('标签名',max_length=30)
     created_time = models.DateTimeField('创建时间',auto_now_add=True)
@@ -130,7 +148,7 @@ class Tag(models.Model):
 
     def get_absolute_url(self):
         return reverse('blog:tag_detail',kwargs={'tag_name':self.name})
-
+    @cache_decorator(60*60*10)
     def get_article_count(self):
         return Article.objects.filter(tags__name = self.name).distinct().count()
 
@@ -138,15 +156,7 @@ class Tag(models.Model):
         ordering =  ['name']
         verbose_name = "标签"
         verbose_name_plural  = verbose_name
-
-    def saave(self,*args,**kwargs):
-        try:
-            notify = sipder_notify()
-            notify.notify(self.get_absolute_url())
-        except Exception as e:
-            print(e)
-        super().save(*args,**kwargs)    
-
+    
 class Links(models.Model):
     """友情链接"""
     name = models.CharField("链接名称",max_length=30)

@@ -37,7 +37,7 @@ def datetimeformat(data):
 @stringfilter
 def custom_markdown(content):
     print("custom_markdown() enter")
-    from DjangoBlog.common_markdown import common_markdown
+    from DjangoBlog.utils import common_markdown
     return mark_safe(common_markdown.get_markdown(content))
 
 

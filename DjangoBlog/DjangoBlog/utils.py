@@ -41,11 +41,7 @@ def block_code(text,lang,inlinestyles = False,linenos=False):
         return '<pre class="%s"><code>%s</code></pre>\n' %(lang,mistune.escape(text))
 
 
-class BlogMarkDownRenderer(mistune.BaseRenderer):
-    
-    def image(self,src,title,text):
-        html = super.im
-    
+class BlogMarkDownRenderer(mistune.BaseRenderer):    
     def block_code(self,text,lang):
         #renderer has an options
         inlinestyles  = self.options.get('inlinestyles')

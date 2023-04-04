@@ -230,6 +230,7 @@ ADMINS = [('huangqinping','xxxxxxx@qq.com')]
 LOG_PATH = os.path.join(BASE_DIR,'logs')
 if not os.path.exists(LOG_PATH):
     os.makedirs(LOG_PATH,exist_ok=True)
+
 LOGGING = {
         'version':1,
         'disable_existing_loggers':False,
@@ -239,7 +240,7 @@ LOGGING = {
             },
         'formatters':{
             'verbose':{
-                'format':'[%(asctime)s] % (levelname)s [%(name)s.%(funcName)s:%(lineno)d %(module)]',
+                'format':'[%(asctime)s] %(levelname)s [%(name)s.%(funcName)s:%(lineno)d %(module)s]',
                 }
             },
         'filters':{
@@ -290,4 +291,3 @@ LOGGING = {
                 }
             },
 }
-

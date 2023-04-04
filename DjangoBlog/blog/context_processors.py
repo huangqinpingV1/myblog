@@ -3,12 +3,16 @@
 from .models import Category,Article,Tag
 from django.conf import settings
 from django.core.cache import cache
+from DjangoBlog.utils import logger
+
 def seo_processor(requests):
     key = 'seo_processor'
     value = cache.get(key)
     if value:
+        logger.info('get processor cache')
         return value
     else:
+        logger.info('set processor cache')
         value= {
             'SHOW_GOOGLE_ADSENSE':settings.SHOW_GOOGLE_ADSENSE,
             'SITE_NAME':settings.SITE_NAME,

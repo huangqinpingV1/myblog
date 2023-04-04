@@ -21,6 +21,7 @@ from .sitemap import StaticViewSitemap,ArticleSiteMap,CategorySiteMap,TagSiteMap
 from .feeds import DjangoBlogFeed
 from django.views.decorators.cache import cache_page
 from django.conf import settings
+from django.conf.urls.static import static
 
 sitemaps ={
         'blog':ArticleSiteMap,
@@ -43,4 +44,4 @@ urlpatterns = [
     path('feed/',cache_page(60*60*10)(DjangoBlogFeed())),
     #添加搜索相关功能
     path('search',include('haystack.urls'),name='search'),
-    ]
+    ] + static(settings.STATIC_URL,document_root=settings.STATIC_ROOT)

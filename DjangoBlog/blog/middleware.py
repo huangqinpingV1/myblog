@@ -22,7 +22,9 @@ class OnlineMiddleware(object):
         print("ua  ="+str(user_agent)+",ip = "+str(ip))
         if not response.streaming:
             try:
-                cast_time =time.time() -start_time
+                cast_time = 0.921
+                if self.__dict__ and 'start_time' in self.__dict__:
+                    cast_time = time.time() - self.start_time
                 response.content = response.content.replace(b'<!!LOAD_TIMES!!>',str.encode(str(cast_time)[:5]))
             except Exception as e:
                 print("Error OnlineMiddleware:%s" % e)

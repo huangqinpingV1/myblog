@@ -5,6 +5,7 @@ import requests
 from django.conf import settings
 
 class sipder_notify():
+    @staticmethod
     def baidu_notify(self,urls):
         try:
             data  = '\n'.join(urls)
@@ -12,13 +13,13 @@ class sipder_notify():
             print(result.text)
         except Exception as e:
             print(e)
-     
+    @staticmethod 
     def __google_notify(self):
         try:
             ping_google('/sitemap.xml')
         except Exception as e:
             print(e)
-     
+    @staticmethod 
     def notify(self,url):
-         self.baidu_notify(url)
-         self.__google_notify()
+         spider_notify.baidu_notify(url)
+         spider_notify.__google_notify()

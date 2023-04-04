@@ -12,6 +12,7 @@ from django.utils.encoding import force_str
 import hashlib
 import urllib
 from comments.models import Comment
+from DjangoBlog.utils import logger
 import traceback
 #注册自定义标签
 register = template.Library()
@@ -78,6 +79,7 @@ def load_articletags(article):
 @register.inclusion_tag('blog/tags/sidebar.html')
 def load_sidebar(user):
     print("loadsidebartags() enter")
+    logger.info('load sidebar')
     recent_articles = Article.objects.filter(status='p')[::settings.SIDEBAR_ARTICLE_COUNT]
     sidebar_categorys = Category.objects.all()
     most_read_articles = Article.objects.filter(status = 'p').order_by('-views')[::settings.SIDEBAR_ARTICLE_COUNT]

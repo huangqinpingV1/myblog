@@ -5,7 +5,7 @@ from django.conf import settings
 from uuslug import slugify
 from DjangoBlog.spider_notify import sipder_notify
 from django.contrib.sites.models import Site
-from DjangoBlog.utils import cache_decorator
+from DjangoBlog.utils import cache_decorator,logger
 from django.utils.functional import cached_property
 # Create your models here.
 
@@ -18,8 +18,9 @@ class BaseModel(models.Model):
         try:
             notify  = sipder_notify()
             notify_url = self.get_full_url()
-            notify.baidu_notify(notify_url)
+            spider_notify.baidu_notify(notify_url)
         except Exception as ex:
+            logger.error("notify sipder",ex)
             print(ex)
     
 
@@ -116,7 +117,7 @@ class Article(BaseModel):
 #文章分类模型
 class Category(BaseModel):
     """文章分类"""
-    name = models.CharField('分类名',max_length =30)
+    name = models.CharField('分类名',max_length =30,unique=True)
     created_time = models.DateTimeField('创建时间',auto_now_add = True)
     last_mod_time  = models.DateTimeField('修改时间',auto_now = True)
     #增加parent_category字段
@@ -139,7 +140,7 @@ class Category(BaseModel):
 #文章标签模型 
 class Tag(BaseModel):
     """文章标签"""
-    name = models.CharField('标签名',max_length=30)
+    name = models.CharField('标签名',max_length=30,unique=True)
     created_time = models.DateTimeField('创建时间',auto_now_add=True)
     last_mod_time = models.DateTimeField('修改时间',auto_now=True)
 
@@ -159,7 +160,7 @@ class Tag(BaseModel):
     
 class Links(models.Model):
     """友情链接"""
-    name = models.CharField("链接名称",max_length=30)
+    name = models.CharField("链接名称",max_length=30,unique=True)
     link = models.URLField("链接地址")
     sequence = models.IntegerField("排序",unique = True)
     created_time = models.DateTimeField('创建时间',auto_now_add = True)

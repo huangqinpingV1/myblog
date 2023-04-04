@@ -4,7 +4,7 @@ from django.contrib.sitemaps import ping_google
 import requests
 from django.conf import settings
 
-class sipder_notify():
+class spider_notify():
     @staticmethod
     def baidu_notify(self,urls):
         try:

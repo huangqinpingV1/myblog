@@ -3,7 +3,7 @@ from django.db import models
 from django.urls import reverse
 from django.conf import settings
 from uuslug import slugify
-from DjangoBlog.spider_notify import sipder_notify
+from DjangoBlog.spider_notify import spider_notify
 from django.contrib.sites.models import Site
 from DjangoBlog.utils import cache_decorator,logger
 from django.utils.functional import cached_property

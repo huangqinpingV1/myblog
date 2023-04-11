@@ -212,7 +212,12 @@ OAHUTH ={
         'appkey':'3161614143',
         'appsecret':'ee17c099317f872eeddb25204ea46721',
         'callbackurl':'http://blog.lylinux.org/oauth/weibo',
-        }        
+        },
+    "google":{
+        'appkey':os.environ.get('GOOGLE_APP_KEY'),
+        'appsecret':os.environ.get('GOOGLE_APP_SECRET'),
+        'callbackurl':'http://www.lylinux.net/oauth/googleauthorize'
+        }
 }
 
 

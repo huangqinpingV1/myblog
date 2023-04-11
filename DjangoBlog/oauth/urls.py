@@ -7,5 +7,7 @@ app_name= 'oauth'
 urlpatterns=[
         path('oauth/wbauthorize/<sitename>',views.wbauthorize),
         path('oauth/wboauthurl',views.wboauthurl),
+        path('oauth/googleauthurl',views.googleoauthurl),
+        path('oauth/googleauthorize',views.googleauthorize)
         ]
 

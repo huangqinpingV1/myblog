@@ -53,7 +53,9 @@ INSTALLED_APPS = [
     #站内搜索
     'haystack',
     #site app
-    'django.contrib.sites'
+    'django.contrib.sites',
+    #jss,css压缩相关
+    'compressor',
 
 ]
 
@@ -68,7 +70,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    #中间键
+    #中间件
     'blog.middleware.OnlineMiddleware'
 ]
 
@@ -292,3 +294,18 @@ LOGGING = {
                 }
             },
 }
+#配置STATICFILES_FINDERS
+STATICFILES_FINDERS = {
+        'django.contrib.staticfiles.finders.FileSystemFinder',
+        'django.contrib.staticfiles.finders.AppDirectoriesFinder',
+        'compressor.finders.CompressorFinder',
+        }
+#添加django-compressor配置
+COMPRESS_ENABLED = True
+COMPRESS_CSS_FILTERS =[
+        'compressor.filters.css_default.CssAbsoluteFilter',
+        'compressor.filters.cssmin.CSSMinFilter',
+]
+COMPRESS_JS_FILTERS =[
+        'compressor.filters.jsmin.JSMinFilter'
+]

@@ -99,7 +99,7 @@ def load_sidebar(user):
             'show_adsense':show_adsense
             }
 @register.inclusion_tag('blog/tags/article_meta_info.html')
-def load_articlemetas(article,user):
+def load_article_metas(article,user):
     print("loadarticlemetas() enter")
     return {'article':article,
             'user':user}

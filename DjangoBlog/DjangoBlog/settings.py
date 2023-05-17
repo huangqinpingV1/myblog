@@ -105,6 +105,8 @@ HAYSTACK_CONNECTIONS ={
             }
         }
 HAYSTACK_SIGNAL_PROCESSOR = 'haystack.signals.RealtimeSignalProcessor'
+#允许使用用户名或密码登录
+AUTHENTICATION_BACKENDS =['accounts.user_login_backend.EmailOrUsernameModelBackend']
 #
 # Database
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases

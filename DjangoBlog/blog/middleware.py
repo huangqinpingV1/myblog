@@ -9,7 +9,6 @@ from user_agents import parse
 class OnlineMiddleware(object):
     def __init__(self,get_response= None):
         self.get_response = get_response
-        print("__init__() enter")
         super().__init__()
 
     def __call__(self,request):
@@ -19,7 +18,6 @@ class OnlineMiddleware(object):
         http_user_agent = request.META.get('HTTP_USER_AGENT','')
         ip,_ =get_client_ip(request)
         user_agent = parse(http_user_agent)
-        print("ua  ="+str(user_agent)+",ip = "+str(ip))
         if not response.streaming:
             try:
                 cast_time = 0.921

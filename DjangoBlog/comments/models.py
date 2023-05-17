@@ -5,6 +5,7 @@ from django.core.mail import send_mail
 from django.core.mail import EmailMultiAlternatives
 from django.contrib.sites.models import Site
 import _thread
+from DjangoBlog.utils import cache
 # Create your models here.
 #创建评论模型
 class Comment(models.Model):
@@ -23,7 +24,10 @@ class Comment(models.Model):
         verbose_name_plural = verbose_name
 
     def send_comment_email(self,msg):
-        msg.send()
+        try:
+            msg.send()
+        except:
+            pass
 
     def save(self,*args,**kwargs):
        super().save(*args,**kwargs)

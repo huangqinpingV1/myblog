@@ -23,7 +23,7 @@
                 <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
 
                 <div class="checkbox">
-                    <a class="pull-right">Need help?</a>
+			{% comment %}<a class="pull-right">Need help?</a> {%  endcomment %}
                     <label>
                         <input type="checkbox" value="remember-me"> Stay signed in
                     </label>
@@ -34,6 +34,7 @@
 
         <p class="text-center">
 	<a href="{% url "accounts:register" %}"> 创建账号</a>
+	|
 	<a href="/">主页</a>
         </p>
 

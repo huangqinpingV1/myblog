@@ -11,6 +11,7 @@ from django.contrib.auth.models import User
 from django.contrib.auth import get_user_model
 from accounts.models import BlogUser
 from django import forms
+from django.contrib import auth
 
 class CommentPostView(FormView):
     form_class = CommentForm
@@ -18,7 +19,9 @@ class CommentPostView(FormView):
     
     def get(self,request,*args,**kwargs):
         article_id = self.kwargs['article_id']
-        url = reverse('blog:detail',kwargs ={'article_id':article_id})
+        article  = Article.objects.get(pk=article_id)
+        url = article.get_absolute_url()
+        print("文章路径url="+url)
         return HttpResponseRedirect(url + "#comments")
 
 
@@ -44,12 +47,11 @@ class CommentPostView(FormView):
         if not self.request.user.is_authenticated():
             comment = form.save(False)
             comment.article = article
-            user = get_user_model().objects.create_user(username=username,email=email,password = None,nickname=username)
-        
-        author_id = user.pk
+            user = get_user_model().objects.get_or_create(username=username,email=email)[0]
 
-
-        comment.author = get_user_mpdel().objects.get(pk=author_id)
+        commant = form.save(False)
+        comment.article = article
+        comment.author = user
         
         if form.cleaned_data['parent_comment_id']:
             parent_comment = Comment.objects.get(pk  = form.cleaned_data['parent_comment_id'])

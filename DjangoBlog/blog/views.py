@@ -23,6 +23,7 @@ import datetime
 from django.views.decorators.csrf import csrf_exempt
 import os
 from django.contrib.auth.decorators import login_required
+from DjangoBlog.utils import cache,cache_decorator
 """class SeoProcessor():
     __metaclass__ = ABCMeta
 
@@ -104,6 +105,7 @@ class ArticleDetailView(DetailView):
             user = self.requst.user
             comment_form.fields['email'].initial  = user.email
             comment_form.fields['name'].initial  = user.username
+        key ="article_comment_{}".format(articleid)
         
         article_comments = self.object.comment_set.all()
         print(article_comments)
@@ -214,8 +216,9 @@ def fileupload(request):
 def refresh_memcache(requst):
     try:
         if request.user.is_superuser:
-            result = os.open('  service memcached restart ').readline()
-            return HttpResponse(result)
+            from DjangoBlog.utils import cache
+            cache.clear()
+            return HttpResponse("ok")
         else:
             from django.http import HttpResponseForbidden
             return HttpResponseForbidden()

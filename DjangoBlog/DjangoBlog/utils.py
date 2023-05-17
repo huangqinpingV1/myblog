@@ -1,6 +1,5 @@
 #!/usr/bin/env python
 #encoding:utf-8
-"代码高亮"
 import mistune
 from pygments import highlight
 from pygments.lexers import get_lexer_by_name

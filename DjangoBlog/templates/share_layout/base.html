@@ -63,7 +63,7 @@
     <div id="main" class="wrapper">
         {% block content %}
         {% endblock %}
-	{% cache 36000 sidebar %}
+	{% cache 36000 sidebar request.user.username %}
 	{% block sidebar %}
         {% endblock %}
 	{% endcache %}

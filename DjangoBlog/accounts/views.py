@@ -21,11 +21,9 @@ class RegisterView(FormView):
 
     def form_valid(self,form):
         user =form.save(False)
-        print("form_valid() enter")
         #traceback.print_stack()
         user.save(True)
         url = reverse('accounts:login')
-        print("url="+url)
         return HttpResponseRedirect(url)
 
 @never_cache

@@ -9,6 +9,7 @@ class EmailOrUsernameModelBackend():
     允许用户使用用户名和邮箱登录
     """
     def authenticate(self,username=None,password=None):
+        print("用户名或邮箱登录:"+username)
         if '@' in username:
             kwargs = {'email':username}
         else :

@@ -11,13 +11,15 @@ import logging
 #定义日志器
 logger = logging.getLogger('djangoblog')
 
-def cache_decorator(expiration =3* 60):
+def cache_decorator(expiration =3* 60,cache_key=None):
     def wrapper(func):
         def news(*args,**kwargs):
-            unique_str = repr((func,args,kwargs))
-            m = md5(unique_str.encode('utf-8'))
-            key = m.hexdigest()
-            value = cache.get(key)
+            key = cache_key
+            if not key:
+                unique_str  = repr((func,args,kwargs))
+                m = md5(unique_str.encode('utf-8'))
+                key = m.hexdigest()
+            value = cache.get(key)    
             if value:
                 logger.info('cache_decorator get cache %s' % func.__name__)
                 return value

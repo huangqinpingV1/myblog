@@ -14,6 +14,11 @@ class ArticleForm(forms.ModelForm):
 class ArticleAdmin(admin.ModelAdmin):
     form = ArticleForm
 
+    def save_model(self,request,obj,form,change):
+        super(ArticleAdmin,self).save_model(request,obj,form,change)
+        from DjangoBlog.utils import cache
+        cache.clear()
+
 # Register your models here.
 #注册模型
 admin.site.register(Article,ArticleAdmin)

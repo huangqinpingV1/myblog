@@ -59,6 +59,15 @@ class CommentPostView(FormView):
 
         comment.save(True)
 
+        from DjangoBlog.utils import expire_view_cache,cache
+        from django.contrib.sites.models import Site
+        path = article.get_absolute_url()
+        site = Site.objects.get_current().domain
+
+        expire_view_cache(path,servername=site,serverport=self.request.get_port(),key_prefix='blogdetail')
+        if cache.get('seo_processor'):
+            cache.delete('seo_processor')
+
         return HttpResponseRedirect("%s#div-comment-%d" % (article.get_absolute_url(),comment.pk))
 
 

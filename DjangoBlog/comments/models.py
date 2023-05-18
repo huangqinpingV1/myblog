@@ -22,6 +22,8 @@ class Comment(models.Model):
         ordering = ['created_time']
         verbose_name = "评论"
         verbose_name_plural = verbose_name
+        get_latest_by  = 'created_time'
+        print("Enter Comment")
 
     def send_comment_email(self,msg):
         try:

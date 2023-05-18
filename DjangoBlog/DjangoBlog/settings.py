@@ -61,11 +61,12 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
-    #'django.middleware.cache.UpdateCacheMiddleware',
+    'django.middleware.cache.UpdateCacheMiddleware',
     'django.middleware.gzip.GZipMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.http.ConditionalGetMiddleware',
     'django.middleware.common.CommonMiddleware',
+    'django.middleware.cache.FetchFromCacheMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
@@ -209,6 +210,9 @@ CACHE_MIDDLE_WARE_SECONDS =60*60*10
 CACHE_MIDDLEWARE_KEY_PREFIX ='djangoblog'
 CACHE_MIDDLEWARE_ALIAS = 'default'
 
+SESSION_ENGINE = 'django.contrib.sessions.backends.cache'
+SESSION_CACHE_ALIAS  = 'default'
+
 OAHUTH ={
     'sina':{
         'appkey':'3161614143',
@@ -223,7 +227,7 @@ OAHUTH ={
 }
 
 
-SITE_ID = 2
+SITE_ID = 1
 BAIDU_NOTIFY_URL="http://data.zz.baidu.com/urls?site=https://www.lylinux.net&token=1uAOGrMsUm5syDGn&type=original"
 #email配置
 EMAIL_BACKEND="django.core.mail.backends.smtp.EmailBackend"

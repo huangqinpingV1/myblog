@@ -10,7 +10,13 @@ from django.utils.functional import cached_property
 # Create your models here.
 
 class BaseModel(models.Model):
+    slug =models.SlugField(default='no-slug',max_length=60,blank =True)
+
     def save(self,*args,**kwargs):
+        if not self.slug or self.slug=='no-slug' or not self.id:
+            #only set the slug when the object is created
+            slug = self.title if  'title' in self.__dict__ else self.name
+            self.slug = slugify(slug)
         super().save(*args,**kwargs)
 
         if 'update_fields' in kwargs and len(kwargs['update_fields']) == 1 and kwargs['update_field'][0]  == 'views':
@@ -43,7 +49,7 @@ class Article(BaseModel):
     body = models.TextField('正文')
     created_time = models.DateTimeField('创建时间',auto_now_add = True)
     last_mod_time = models.DateTimeField('修改时间',auto_now = True)
-    pub_time  = models.DateTimeField('发布时间',blank=True,null=True,help_text='不指定发布时间则视为草稿，可以指定未来时间，到时将自动发布。')
+    pub_time  = models.DateTimeField('发布时间',blank=True,null=True)
     status  = models.CharField('文章状态',max_length=1,choices=STATUS_CHOICES,default ='p')
     comment_status  = models.CharField('评论状态',max_length=1,choices=COMMENT_STATUS,default='o')
 
@@ -53,7 +59,6 @@ class Article(BaseModel):
     category = models.ForeignKey('Category',verbose_name='分类',on_delete=models.CASCADE,blank  = True,null =True)
     tags  = models.ManyToManyField('Tag',verbose_name='标签集合',blank=True)
 
-    slug = models.SlugField(default='no-slug',max_length=60,blank=True)
     type =models.CharField('类型',max_length=1,choices = TYPE,default = 'a')
 
 
@@ -66,6 +71,7 @@ class Article(BaseModel):
         ordering = ['-pub_time']
         verbose_name = "文章"
         verbose_name_plural = verbose_name
+        get_latest_by = 'created_time'
 
     
     def get_absolute_url(self):
@@ -97,23 +103,23 @@ class Article(BaseModel):
     def viewed(self):
         self.views +=1
         self.save(update_fields =['views'])
-    @cache_decorator(60*60*10)
+    """@cache_decorator(60*60*10)
     def  comment_list(self):
         comment = self.comment_set.all()
         parent_comments  = comments.filter(parent_comment  = None)
-
+    """
     def get_admin_url(self):
         info = (self._meta.app_label,self._meta.model_name)
         return reverse("admin:%s_%s_change" % info,args=(self.pk,))
     @cached_property
     def next_property(self):
         #下一篇
-        return Article.objects.filter(id__gt=self.id,status=0).order_by('id').first()
+        return Article.objects.filter(id__gt=self.id,status='p').order_by('id').first()
 
     @cached_property
     def pre_article(self):
         #前一篇
-        return Article.objects.filter(id__gt=self.id,status=0).first()
+        return Article.objects.filter(id__gt=self.id,status='p').first()
 #文章分类模型
 class Category(BaseModel):
     """文章分类"""
@@ -130,7 +136,7 @@ class Category(BaseModel):
         verbose_name_plural = verbose_name
 
     def get_absolute_url(self):
-        return reverse('blog:category_detail',kwargs  ={'category_name':self.name})
+        return reverse('blog:category_detail',kwargs  ={'category_name':self.slug})
     
     def __str__(self):
         return self.name
@@ -148,7 +154,7 @@ class Tag(BaseModel):
        return self.name
 
     def get_absolute_url(self):
-        return reverse('blog:tag_detail',kwargs={'tag_name':self.name})
+        return reverse('blog:tag_detail',kwargs={'tag_name':self.slug})
     @cache_decorator(60*60*10)
     def get_article_count(self):
         return Article.objects.filter(tags__name = self.name).distinct().count()

@@ -8,5 +8,5 @@ app_name ='accounts'
 urlpatterns =[
         path('login/',views.LoginView.as_view(success_url='/'),name='login',kwargs={'authentication_form':LoginForm}),
         path('register/',views.RegisterView.as_view(success_url='/'),name='register'),
-        path('logout/',views.logout,name='logout')
+        path('logout/',views.LogoutView.as_view(),name='logout')
         ]

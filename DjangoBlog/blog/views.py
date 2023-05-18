@@ -3,6 +3,8 @@ from blog.models import Article,Category,Tag
 # Create your views here.
 #View 视图主要使用Model 的模型
 from django.views.generic.list import  ListView
+from django.views.generic import TemplateView
+from django.views.decorators.cache import cache_page
 from django.views.generic.detail import DetailView
 from django.conf import settings
 from django.core.exceptions import ObjectDoesNotExist
@@ -24,6 +26,9 @@ from django.views.decorators.csrf import csrf_exempt
 import os
 from django.contrib.auth.decorators import login_required
 from DjangoBlog.utils import cache,cache_decorator
+from django.utils.cache import get_cache_key
+from django.utils.decorators import method_decorator
+from django.utils.decorators import classonlymethod
 """class SeoProcessor():
     __metaclass__ = ABCMeta
 
@@ -39,7 +44,12 @@ from DjangoBlog.utils import cache,cache_decorator
     def get_description(self):
         pass
 """
-
+"""class CacheTemplateView(ListView):
+    @classonlymethod
+    def as_view(cls,**initkwargs):
+        view = super(CacheTemplateView,cls).as_view(**initkwargs)
+        return cache_page(60*60*10)(view)
+"""
 class ArticleListView(ListView):
     #template_name 属性用于指定用哪个模板进行渲染
     template_name = 'blog/article_index.html'
@@ -51,6 +61,9 @@ class ArticleListView(ListView):
     page_kwarg ='page'
     print("ArticleListView() constructor")
     
+    def get_view_cache_key(self):
+        return self.request.get['pages']
+
     
     def __init__(self):
         print("ArtilceListView() __init__()")
@@ -125,7 +138,10 @@ class CategoryDetailView(ArticleListView):
     page_type  ="分类目录归档"
     
     def get_queryset(self):
-        categoryname  = self.kwargs['category_name']
+        slug = self.kwargs['category_name']
+        category= Category.objects.get(slug=slug)
+        categoryname = category.name
+        self.categoryname = categoryname
         print("CateGoryDetailView get_queryset() enter")
         try:
             categoryname = categoryname.split('/')[-1]
@@ -137,7 +153,7 @@ class CategoryDetailView(ArticleListView):
     def get_context_data(self,**kwargs):
         #增加额外数据
         print("CategoyDetailView get_context_data() enter")
-        categoryname = self.kwargs['category_name']
+        categoryname = self.categoryname
         try:
             categoryname = categoryname.split('/')[-1]
         except:
@@ -179,13 +195,16 @@ class TagDetailView(ArticleListView):
     print("TagDetailView constrouctor")
     def get_queryset(self):
         print("TagDetailView get_queryset() enter")
-        tag_name = self.kwargs['tag_name']
+        slug = self.kwargs['category_name']
+        tag = Tag.objects.get(slug=slug)
+        tag_name = tag.name
+        self.name = tag_name
         article_list = Article.objects.filter(tags__name = tag_name)
         return article_list
 
     def get_context_data(self,**kwargs):
       print("TagDetailView get_context_data()")
-      tag_name = self.kwargs['tag_name']
+      tag_name = self.name
       kwargs['page_type'] = TagDetailView.page_type
       kwargs['tag_name'] = tag_name
       return super(TagDetailView,self).get_context_data(**kwargs)

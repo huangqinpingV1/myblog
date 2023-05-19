@@ -14,5 +14,5 @@ def purge_cache(path):
 if __name__ =="__main__":
     path_list =os.path.dirname(os.path.abspath(__file__)).split(os.sep)
 
-    root_dir =os.sep.join(path_list[0:-2])
-    purge_cache(root_dir)
+    #root_dir =os.sep.join(path_list[0:-2])
+    purge_cache('./DjangoBlog')

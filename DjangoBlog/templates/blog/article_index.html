@@ -31,7 +31,8 @@
             {% endfor %}
 
 	    {% if is_paginated %}
-                <nav id="nav-below" class="navigation" role="navigation">
+	    {% load_pagination_info page_obj page_type tag_name %}
+	    {% comment %}<nav id="nav-below" class="navigation" role="navigation">
                     <h3 class="assistive-text">文章导航</h3>
                     {% if page_obj.has_next %}
                         <div class="nav-previous"><a
@@ -44,7 +45,7 @@
                                     class="meta-nav">→</span></a>
                         </div>
                     {% endif %}
-                </nav><!-- .navigation -->
+	    </nav><!-- .navigation -->{% endcomment %}
             {% endif %}
 	 </div><!-- #content -->
     </div><!-- #primary -->

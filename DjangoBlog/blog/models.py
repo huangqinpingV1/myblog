@@ -24,7 +24,7 @@ class BaseModel(models.Model):
         try:
             notify  = sipder_notify()
             notify_url = self.get_full_url()
-            spider_notify.baidu_notify(notify_url)
+            spider_notify.baidu_notify([notify_url])
         except Exception as ex:
             logger.error("notify sipder",ex)
             print(ex)

@@ -52,6 +52,11 @@ def truncatechars_content(content):
     from django.template.defaultfilters import truncatechars_html
 
     return truncatechars_html(content, settings.ARTICLE_SUB_LENGTH)
+@register.filter(is_safe =True)
+@stringfilter
+def truncate(content):
+    from django.tmplate.defaultfilters import truncatechars
+    return truncatechars(content,150)
 
 @register.inclusion_tag('blog/tags/breadcrumb.html')
 def load_breadcrumb(article):

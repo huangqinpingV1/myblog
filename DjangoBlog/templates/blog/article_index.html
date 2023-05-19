@@ -55,9 +55,7 @@
 
 {% block sidebar %}
      <script>console.log("调用blog_tag的包含标签")</script>
-     {% cache 36000 sidebar request.user.username %}
     {% load_sidebar request.user %}
-    {% endcache %}
 {% endblock %}
 
 

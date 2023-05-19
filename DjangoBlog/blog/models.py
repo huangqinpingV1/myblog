@@ -5,7 +5,7 @@ from django.conf import settings
 from uuslug import slugify
 from DjangoBlog.spider_notify import spider_notify
 from django.contrib.sites.models import Site
-from DjangoBlog.utils import cache_decorator,logger
+from DjangoBlog.utils import cache_decorator,logger,cache
 from django.utils.functional import cached_property
 # Create your models here.
 
@@ -103,6 +103,17 @@ class Article(BaseModel):
     def viewed(self):
         self.views +=1
         self.save(update_fields =['views'])
+        cache_key = 'article_comments_{id}'.format(id=self.id)
+        value = cache.get(cache_key)
+        if value:
+            logger.info('get article comments:{id}'.format(id=self.id))
+            return value
+        else:
+            comments = self.comment_set.all()
+            cache.get(cache_key,comments)
+            logger.info('set article comments:{id}'.format(id=self.id))
+            return comments
+
     """@cache_decorator(60*60*10)
     def  comment_list(self):
         comment = self.comment_set.all()

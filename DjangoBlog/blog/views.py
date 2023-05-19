@@ -25,7 +25,7 @@ import datetime
 from django.views.decorators.csrf import csrf_exempt
 import os
 from django.contrib.auth.decorators import login_required
-from DjangoBlog.utils import cache,cache_decorator
+from DjangoBlog.utils import cache,cache_decorator,logger,get_md5
 from django.utils.cache import get_cache_key
 from django.utils.decorators import method_decorator
 from django.utils.decorators import classonlymethod
@@ -64,7 +64,39 @@ class ArticleListView(ListView):
     def get_view_cache_key(self):
         return self.request.get['pages']
 
+    @property
+    def page_number(self):
+        page_kwarg = self.page_kwarg
+        page = self.kwargs.get(page_kwarg) or self.request.GET.get(page_kwarg) or 1
+        return page
+
+    def get_queryset_cache_key(self):
+        """
+        子类重写，获得queryset的缓存key
+        """
+        raise  NotImplementedError()
     
+    def get_queryset_data(self):
+
+        raise NotImplementedError()
+
+    def get_queryset_from_cache(self,cache_key):
+        value =cache.get(cache_key)
+        if value:
+            logger.info('get view cache.key:{key}'.format(key=cache_key))
+            return value
+        else:
+            article_list = self.get_queryset_data()
+            cache.set(cache_key,article_list)
+            logger.info('set view cache.key:{key}'.format(key=cache_key))
+            return article_list
+
+    def get_queryset(self):
+        key = self.queryset_cache_key()
+        value = self.get_queryset_from_cache(key)
+        return value
+
+
     def __init__(self):
         print("ArtilceListView() __init__()")
         self.page_description =  ''
@@ -91,6 +123,14 @@ class IndexView(ArticleListView):
         context = super().get_context_data(**kwargs)
         print("get_context_data() enter")
         return context
+    
+    def get_queryset_data(self):
+       article_list = Article.objects.filter(type='a',status='p')
+       return article_list
+
+    def get_queryset_cache_key(self):
+       cache_key  =  'index_{page}'.format(page=self.page_number)
+       return cache_key
 
 class ArticleDetailView(DetailView):
     print("ArticleDetailView() enter")
@@ -120,7 +160,7 @@ class ArticleDetailView(DetailView):
             comment_form.fields['name'].initial  = user.username
         key ="article_comment_{}".format(articleid)
         
-        article_comments = self.object.comment_set.all()
+        article_comments = self.object.comment_list()
         print(article_comments)
 
         kwargs['form']  = comment_form
@@ -137,6 +177,24 @@ class CategoryDetailView(ArticleListView):
     print("CategoryDetailView constructor")
     page_type  ="分类目录归档"
     
+
+    def get_queryset_data(self):
+        slug  = self.kwargs['category_name']
+        category = get_object_or_404(Category,slug=slug)
+        categoryname = category.name
+        self.categoryname = categoryname
+        article_list = Article.objects.filter(category__name=categoryname,status='p')
+        return article_list
+
+    
+    def get_queryset_cache_key(self):
+        slug = self.kwargs['category_name']
+        category =get_object_or_404(Category,slug=slug)
+        categoryname =category.name
+        self.categoryname =categoryname
+        cache_key ='category_list_{categoryname}_{page}'.format(categoryname=cateforyname,page=self.page_number)
+        return cache_key
+
     def get_queryset(self):
         slug = self.kwargs['category_name']
         category= Category.objects.get(slug=slug)
@@ -165,9 +223,14 @@ class CategoryDetailView(ArticleListView):
 class AuthorDetailView(ArticleListView):
     page_type = '作者文章归档'
     print("AuthorDetailView constructor")
+    
+    def get_queryset_cache_key(self):
+        author_name  = self.kwargs['author_name']
+        cache_key = 'author_{author_name}_{page}'.fromat(author_name=author_name,page=self.page_number)
+        return cache_key
 
-    def get_queryset(self):
-        print("AuthorDetailView get_queryset()")
+    def get_queryset_data(self):
+        print("AuthorDetailView get_queryset_data()")
         author_name = self.kwargs['author_name']
         article_list = Article.objects.filter(author__username=author_name)
         return article_list
@@ -193,14 +256,22 @@ class TagListView(ListView):
 class TagDetailView(ArticleListView):
     page_type ='分类标签归档'
     print("TagDetailView constrouctor")
-    def get_queryset(self):
+    def get_queryset_data(self):
         print("TagDetailView get_queryset() enter")
-        slug = self.kwargs['category_name']
-        tag = Tag.objects.get(slug=slug)
+        slug = self.kwargs['tag_name']
+        tag = get_object_or_404(Tag,slug=slug)
         tag_name = tag.name
         self.name = tag_name
         article_list = Article.objects.filter(tags__name = tag_name)
         return article_list
+
+    def get_queryset_cache_key(self):
+        slug = self.kwargs['tag_name']
+        tag = get_object_or_404(Tag,slug=slug)
+        tag_name = tag.name
+        self.name  =tag_name
+        cache_key = 'tag_{tag_name}_{page}'.format(tag_name=tag_name,page=self.page_number)
+        return cache_key
 
     def get_context_data(self,**kwargs):
       print("TagDetailView get_context_data()")

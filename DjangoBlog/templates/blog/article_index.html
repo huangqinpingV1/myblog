@@ -1,5 +1,6 @@
 {% extends 'share_layout/base.html' %}
 {% load blog_tags %}
+{% load cache %}
 {% block header %}
 {% if tag_name  %}
     <title>{{ page_type}}:{{ tag_name }} | {{ SITE_DESCRIPTION }}</title>
@@ -54,7 +55,9 @@
 
 {% block sidebar %}
      <script>console.log("调用blog_tag的包含标签")</script>
+     {% cache 36000 sidebar request.user.username %}
     {% load_sidebar request.user %}
+    {% endcache %}
 {% endblock %}
 
 

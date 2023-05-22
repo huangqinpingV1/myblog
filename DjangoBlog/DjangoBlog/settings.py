@@ -217,17 +217,17 @@ OAHUTH ={
     'sina':{
         'appkey':'3161614143',
         'appsecret':'ee17c099317f872eeddb25204ea46721',
-        'callbackurl':'http://blog.lylinux.org/oauth/weibo',
+        'callbackurl':'http://blog.lylinux.org/oauth/authorize?type=weibo',
         },
     "google":{
         'appkey':os.environ.get('GOOGLE_APP_KEY'),
         'appsecret':os.environ.get('GOOGLE_APP_SECRET'),
-        'callbackurl':'http://www.lylinux.net/oauth/googleauthorize'
+        'callbackurl':'http://www.lylinux.net/oauth/authorize?type=google'
         },
     'github':{
         'appkey':os.environ.get('GITHUB_APP_KEY'),
         'appsecret':os.environ.get('GITHUB_APP_SECRET'),
-        'callbackurl':'http://www.lylinux.net/oauth/githuboauthorize'
+        'callbackurl':'http://www.lylinux.net/oauth/authorize?type=github'
         }
 }
 

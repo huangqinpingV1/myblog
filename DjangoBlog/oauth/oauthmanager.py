@@ -7,6 +7,7 @@ import json
 import urllib.parse
 from DjangoBlog.utils import logger
 from django.conf import settings
+from oauth.models import oauthuser
 
 class BaseOauthManager(metaclass=ABCMeta):
     """获取用户授权"""
@@ -168,7 +169,7 @@ class GitHubOauthManager(BaseOauthManager):
             'client_id': self.client_id,
             'response_type': 'code',
             'redirect_uri': self.callback_url,
-            'scope': 'user:email',
+            'scope': 'user',
         }
         url = self.AUTH_URL + "?" + urllib.parse.urlencode(params, quote_via=urllib.parse.quote)
         return url
@@ -183,9 +184,14 @@ class GitHubOauthManager(BaseOauthManager):
         }
         rsp = self.do_post(self.TOKEN_URL, params)
         print(rsp)
-        obj = json.loads(rsp)
-        self.access_token = str(obj['access_token'])
-        self.openid = str(obj['id_token'])
+        try:
+            from urllib import parse
+            r = parse.parse_qs(rsp)
+            self.access_token = (r['access_token'][0])
+            return self.access_token
+        except:
+            return None
+
     def get_oauth_userinfo(self):
         if not self.is_authorized:
             return None
@@ -194,4 +200,30 @@ class GitHubOauthManager(BaseOauthManager):
         }
         rsp = self.do_get(self.API_URL, params)
         print(rsp)
-        return json.loads(rsp)    
+        try:
+            datas = json.loads(rsp)
+            user = oauthuser()
+            user.picture  = datas['avatar_url']
+            user.nickname  = datas['name']
+            user.openid  =datas['id']
+            user.type = 'gitbub'
+
+            if datas['email']:
+                user.email = datas['email']
+
+            return user
+        except:
+            logger.info('github oauth error .rsp'+rsp)
+            return None
+
+    
+def  get_oauth_apps():
+    applications = BaseOauthManager.__subclasses__()
+    return list(map(lambda x:x(),applications))
+
+def get_manager_by_type(type):
+    apllications = get_oauth_apps()
+    finds = list(filter(lambda x:x.ICON_NAME.lower() == type.lower(),applications))
+    if finds:
+        return finds[0]
+    return None

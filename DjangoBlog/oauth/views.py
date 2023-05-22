@@ -1,15 +1,47 @@
 from django.shortcuts import render
-from .oauthmanager import WBOauthManager,GoogleOauthManager
+from .oauthmanager import WBOauthManager,GoogleOauthManager,get_manager_by_type
 from django.conf import settings
 from django.http import HttpResponse,HttpResponseRedirect
 from django.contrib.auth import get_user_model
-from .models import GoogleUserInfo
+from .models import oauthuser
 from django.contrib.auth import login
 
 
 # Create your views here.
 
+def authorize(request):
+    manager  = None
+    type = request.GET.get('type',None)
+    
+    if not type:
+        return HttpResponseRedirect('/')
+    manager = get_manager_by_type(type)
+    if not manager:
+        return HttpResponseRedirect('/')
 
+    code = request.GET.get('code',None)
+    rsp = manager.get_access_token_by_code(code)
+    if not rsp:
+        return HttpResponseReirect(manager.get_authorization_url())
+    user = manager.get_oauth_userinfo()
+    author = None
+
+    if user:
+        email = user.email
+        if email:
+            author = get_user_model().objects.get(email=email)
+            if not author:
+                #不存在则创建
+                author = get_user_model().objects.create_user(username= user["name"],email=email)
+            user.author = author
+            user.save()
+            login(requset,author)
+            return HttpResponseRedirect('/')
+        if not email:
+            author = get_user_model().objects.create_user(username=user['name'],email=email)
+
+
+"""
 def wbauthorize(self,sitename):
     manager = WBOauthManager()
 
@@ -60,4 +92,4 @@ def googleauthorize(request):
      return HttpResponseRedirect('/')       
 
 
-
+"""

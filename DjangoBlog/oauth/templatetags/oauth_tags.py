@@ -4,18 +4,11 @@
 from oauth.oauthmanager import *
 from django import template
 from django.conf import settings
-
+from oauth.oauthmanager import   get_oauth_apps
 register = template.Library()
 
 @register.inclusion_tag('oauth/oauth_applications.html')
 def load_oauth_applications():
-    applications = BaseOauthManager.__subclasses__()
-    apps  = []
-
-    for application in applications:
-        app = application()
-        icon = app.ICON_NAME
-        authorizeurl = app.get_authorization_url()
-        apps.append((icon,authorizeurl))
-
+    applications  = get_oauth_apps()
+    apps  = list(map(lambda x:(x.ICON_NAME,x.get_authrization )),applications)
     return  {'apps': apps}    

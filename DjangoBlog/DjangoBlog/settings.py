@@ -223,6 +223,11 @@ OAHUTH ={
         'appkey':os.environ.get('GOOGLE_APP_KEY'),
         'appsecret':os.environ.get('GOOGLE_APP_SECRET'),
         'callbackurl':'http://www.lylinux.net/oauth/googleauthorize'
+        },
+    'github':{
+        'appkey':os.environ.get('GITHUB_APP_KEY'),
+        'appsecret':os.environ.get('GITHUB_APP_SECRET'),
+        'callbackurl':'http://www.lylinux.net/oauth/githuboauthorize'
         }
 }
 

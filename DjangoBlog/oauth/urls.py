@@ -6,5 +6,6 @@ from . import views
 app_name= 'oauth'
 urlpatterns=[
         path('oauth/wbauthorize/',views.authorize),
+        path('oauth/requireemail/<oauthid>/',views.RequireEmailView.as_view(),name='require_email'),
         ]
 

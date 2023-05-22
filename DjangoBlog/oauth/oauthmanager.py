@@ -7,7 +7,7 @@ import json
 import urllib.parse
 from DjangoBlog.utils import logger
 from django.conf import settings
-from oauth.models import oauthuser
+from oauth.models import OAuthUser
 
 class BaseOauthManager(metaclass=ABCMeta):
     """获取用户授权"""
@@ -19,7 +19,7 @@ class BaseOauthManager(metaclass=ABCMeta):
     """icon图标名"""
     ICON_NAME = None
 
-    def __init__(selfaccess_token = None,openid =None):
+    def __init__(self,access_token = None,openid =None):
         self.access_token = access_token
         self.openid = openid
 
@@ -56,7 +56,7 @@ class WBOauthManager(BaseOauthManager):
         self.client_id = settings.OAHUTH['sina']['appkey']
         self.client_secret = settings.OAHUTH['sina']['appsecret']
         self.callback_url =settings.OAHUTH['sina']['callbackurl']
-        super(WBOauthManager,self).__init(access_token=access_token,openid=openid)
+        super(WBOauthManager,self).__init__(access_token=access_token,openid=openid)
 
     
     def get_authorization_url(self):
@@ -104,7 +104,7 @@ class GoogleOauthManager(BaseOauthManager):
     ICON_NAME ='google'
 
     def __init__(self,access_token=None,openid=None):
-        self.client_id  = settings.OAHUTH['goole']['appkey']
+        self.client_id  = settings.OAHUTH['google']['appkey']
         self.client_secret = settings.OAHUTH['google']['appsecret']
         self.callback_url = settings.OAHUTH['google']['callbackurl']
         super(GoogleOauthManager,self).__init__(access_token = access_token,openid=openid)
@@ -141,7 +141,7 @@ class GoogleOauthManager(BaseOauthManager):
             logger.info(self.ICON_NAME + ' oauth error '+ rsp)
             return None
 
-    def get_oauthor_userinfo(self):
+    def get_oauth_userinfo(self):
         if not self.is_authorized:
             return None
         params = {
@@ -202,7 +202,7 @@ class GitHubOauthManager(BaseOauthManager):
         print(rsp)
         try:
             datas = json.loads(rsp)
-            user = oauthuser()
+            user = OAuthUser()
             user.picture  = datas['avatar_url']
             user.nickname  = datas['name']
             user.openid  =datas['id']

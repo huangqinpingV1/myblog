@@ -41,7 +41,14 @@
 	    {% comment %} {% load comments_tags %}  
 	    {% load_post_comment article from %} {% endcomment%}
 	    {% include 'comments/tags/comment_list.html' %}
-	    {% include 'comments/tags/post_comment.html' %}
+	    {% if user.is_authenticated %}
+	    	{% include 'comments/tags/post_comment.html' %}
+	    {% else %}
+	    	<div class="comment-area">
+			<h3 class ="comment-area">你还没登录，请您<a href="{% url  "account:login" %}">登录</a></h3>
+			{% load oauth-tags  %}
+			{% load_auth_applications %}
+		</div>
             {% endif %}
     </div><!-- #primary -->
 {% endblock %}

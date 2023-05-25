@@ -29,6 +29,7 @@ from DjangoBlog.utils import cache,cache_decorator,logger,get_md5
 from django.utils.cache import get_cache_key
 from django.utils.decorators import method_decorator
 from django.utils.decorators import classonlymethod
+from django.http import HttpResponseRedirect
 """class SeoProcessor():
     __metaclass__ = ABCMeta
 
@@ -145,6 +146,14 @@ class ArticleDetailView(DetailView):
         obj.viewed()
         self.object = obj
         return obj
+    
+    def dispatch(self,request,*args,**kwargs):
+        slug = self.kwargs['slug'] if 'slug' in self.kwargs else ''
+        if slug:
+            obj = super(ArticleDetail,self).get_object()
+            return HttpResponseRedirect(obj.get_absolute_url)
+        else:
+            return super(ArticleDetailView,self).dispatch(request,*args,**kwargs)
 
     #重写get_context_data
     def get_context_data(self,**kwargs):

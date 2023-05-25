@@ -42,7 +42,7 @@ def authorize(request):
         if email:
             author = None
             try:
-                author = get_user_model().objects.get(email=email)
+                author = get_user_model().objects.get(id=user.author_id)
             except ObjectDoesNotExist:
                 pass
             if not author:

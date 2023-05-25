@@ -30,6 +30,8 @@ class Comment(models.Model):
             msg.send()
         except:
             pass
+    def __str__(self):
+        return self.body
 
     def save(self,*args,**kwargs):
        super().save(*args,**kwargs)

@@ -15,6 +15,10 @@ class OAuthUser(models.Model):
     def __str__(self):
         return self.nikename
 
+    class Meta:
+        verbose_name  = 'oauth用户'
+        verbose_name_plural = verbose_name
+
 class BaseModel(models.Model):
     author = models.ForeignKey(settings.AUTH_USER_MODEL,verbose_name='用户',on_delete=models.CASCADE,blank=True,null =True)
     openid  = models.CharField(max_length= 50)

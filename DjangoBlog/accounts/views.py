@@ -64,7 +64,8 @@ class LoginView(FormView):
         traceback.print_stack()
         if form.is_valid():
             from DjangoBlog.utils import cache
-            cache.clear()
+            if cache and cache is not None:
+                cache.clear()
             auth.login(self.request,form.get_user())
             
             return HttpResponseRedirect('/')

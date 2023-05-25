@@ -52,8 +52,8 @@ def authorize(request):
             login(requset,author)
             return HttpResponseRedirect('/')
         if not email:
-            author = get_user_model().objects.get_or_create(username=user.nikename+'_'+str(user.openid))[0]
-            user.author = author
+            #author = get_user_model().objects.get_or_create(username=user.nikename+'_'+str(user.openid))[0]
+            #user.author = author
             user.save()
             url = reverse('oauth:require_email',kwargs={'oauthid':user.id})
             print(url)

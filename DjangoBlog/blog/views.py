@@ -183,7 +183,8 @@ class CategoryDetailView(ArticleListView):
         category = get_object_or_404(Category,slug=slug)
         categoryname = category.name
         self.categoryname = categoryname
-        article_list = Article.objects.filter(category__name=categoryname,status='p')
+        categorynames = list(map(lambda c:c.name,category.get_sub_categorys()))
+        article_list = Article.objects.filter(category__name__in =categorynames,status='p')
         return article_list
 
     
@@ -307,7 +308,8 @@ def refresh_memcache(requst):
     try:
         if request.user.is_superuser:
             from DjangoBlog.utils import cache
-            cache.clear()
+            if cache and  cache is not None:
+                cache.clear()
             return HttpResponse("ok")
         else:
             from django.http import HttpResponseForbidden

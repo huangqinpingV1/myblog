@@ -7,8 +7,8 @@ class OAuthUser(models.Model):
     author = models.ForeignKey(settings.AUTH_USER_MODEL,verbose_name='用户',blank=True,null= True,on_delete=models.CASCADE)
     openid = models.CharField(max_length=50)
     nikename  =models.CharField(max_length =50,verbose_name='昵称')
-    token = models.CharField(max_length=50)
-    picture  = models.CharField(max_length  =50,blank  = False,null=True)
+    token = models.CharField(max_length=150)
+    picture  = models.CharField(max_length  =350,blank  = False,null=True)
     type = models.CharField(max_length  =50,null =False,blank=False)
     email = models.CharField(max_length=50,null=True,blank =True)
 

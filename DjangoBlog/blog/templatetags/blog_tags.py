@@ -85,7 +85,6 @@ def load_articletags(article):
 @register.inclusion_tag('blog/tags/sidebar.html')
 def load_sidebar(user):
     print("loadsidebartags() enter")
-    logger.info('load sidebar')
     recent_articles = Article.objects.filter(status='p')[::settings.SIDEBAR_ARTICLE_COUNT]
     sidebar_categorys = Category.objects.all()
     most_read_articles = Article.objects.filter(status = 'p').order_by('-views')[::settings.SIDEBAR_ARTICLE_COUNT]
@@ -93,7 +92,17 @@ def load_sidebar(user):
     links = Links.objects.all()
     comment_list = Comment.objects.order_by('-id')[:settings.SIDEBAR_COMMENT_COUNT]
     show_adsense  = settings.SHOW_GOOGLE_ADSENSE
-
+    #tags
+    #根据云 计算字体大小
+    #根据总数计算出平均值，大小为(数目/平均值)
+    increment = 10
+    tags  = Tag.objects.all()
+    sidebar_tags = None
+    if tags:
+        s = list(map(lambda t:(t,t.get_article_count()),tags))
+        count = sum(map(lambda t:t[1],s))
+        dd = count /len(tags)
+        sidebar_tags = list(map(lambda x:(x[0],x[1],(x[1]/dd)*increment),s))
     return {
             'recent_articles':recent_articles,
             'sidebar_categorys':sidebar_categorys,
@@ -102,7 +111,8 @@ def load_sidebar(user):
             'sidabar_links':links,
             'sidebar_comments':comment_list,
             'user':user,
-            'show_adsense':show_adsense
+            'show_adsense':show_adsense,
+            'sidebar_tags':sidebar_tags
             }
 @register.inclusion_tag('blog/tags/article_meta_info.html')
 def load_article_metas(article,user):

@@ -5,7 +5,7 @@ from abc import ABCMeta,abstractmethod,abstractproperty
 import requests
 import json
 import urllib.parse
-from DjangoBlog.utils import logger
+from DjangoBlog.utils import logger,parse_dict_to_url
 from django.conf import settings
 from oauth.models import OAuthUser
 
@@ -117,7 +117,7 @@ class GoogleOauthManager(BaseOauthManager):
                 'redirect_uri':self.callback_url,
                 'scope':'openid email',
                 }
-        url = self.AUTH_URL +"?"+urllib.parse.urlencode(params,quote_via=urllib.parse.quote)
+        url = self.AUTH_URL +"?"+urllib.parse.urlencode(params)
         return url
 
     def get_access_token_by_code(self,code):
@@ -184,7 +184,7 @@ class GitHubOauthManager(BaseOauthManager):
             'redirect_uri': self.callback_url,
             'scope': 'user',
         }
-        url = self.AUTH_URL + "?" + urllib.parse.urlencode(params, quote_via=urllib.parse.quote)
+        url = self.AUTH_URL + "?" + urllib.parse.urlencode(params)
         return url
 
     def get_access_token_by_code(self, code):

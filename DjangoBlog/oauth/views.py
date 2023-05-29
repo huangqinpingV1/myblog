@@ -34,8 +34,14 @@ def authorize(request):
     
 
     if user:
+        if not user.nikename:
+            import datetime
+            user.nikename = 'django'+datetime.datatime.now().strftime('%Y%m%f%H%m%s')
         try:
+            token = user.token
             user =OAuthUser.objects.get(type=type,openid=user.openid)
+            if token:
+                user.token = token
         except ObjectDoesNotExist:
             pass
         email = user.email
@@ -62,6 +68,9 @@ def authorize(request):
             url = reverse('oauth:require_email',kwargs={'oauthid':user.id})
             print(url)
             return HttpResponseRedirect(url)
+    else:
+        return HttpResponseRedirect('/')
+
 
 def emailconfirm(request,id,sign):
     if not sign:
@@ -97,8 +106,10 @@ def emailconfirm(request,id,sign):
                 如果上面链接无法打开，请将此链接复制至浏览器。
                 {url}
     '''.format(type=oauthuser.type, url='http://' + site), [oauthuser.email, ])
-
-    return HttpResponseRedirect('/')    
+    
+    url = reverse('oauth:bindsuccess',kwargs={'oauthid':id})
+    url = url + '?type=success'
+    return HttpResponseRedirect(url)    
 
 
 class RequireEmailView(FormView):
@@ -145,7 +156,24 @@ class RequireEmailView(FormView):
                 {url}
                 """.format(url=url)
         send_email('绑定您的电子邮箱',content,[email,]) 
-        return HttpResponseRedirect('/')
+        url = reverse('oauth:bindsuccess',kwargs={'oauthid':oauthid})
+        url = url+ '?type=email'
+        return HttpResponseRedirect(url)
+
+def bindsuccess(request,oauthid):
+    type = request.GET.get('type',None)
+
+    title = ''
+    content  = ''
+    oauthuser = get_boject_or_404(OAuthUser,pk=oauthid)
+    if type =='email':
+        title ='绑定成功'
+        content = '恭喜您，还差一步就绑定成功了，请您登录您的邮箱查看邮件完成绑定，谢谢。'
+    else:
+        title = '绑定成功'
+        content = "恭喜您绑定成功，您以后可以使用{type}来直接免密码登录本站啦，感谢您对本站对关注。".format(type=oauthuser.type)
+    return  render(request,'oauth/bindsuccess.html',{'title':title,'content':content})
+
 
 """
 def wbauthorize(self,sitename):

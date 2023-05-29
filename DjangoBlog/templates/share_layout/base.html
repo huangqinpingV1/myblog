@@ -41,9 +41,7 @@
    <link rel="stylesheet" href="{% static 'blog/css/nprogress.css'%}"/>
   {% block compress_css %}
   {%  endblock %}
-    <script type="text/javascript" src="{% static 'blog/js/jquery-3.1.1.js' %}"></script>
-	<script type="text/javascript" scr ="{% static 'blog/js/nprogress.js' %}"></script>
-    {% endcompress  %}
+  {% endcompress  %}
 </head>
 
 <body class="home blog custom-font-enabled">
@@ -69,23 +67,8 @@
     </div><!-- #main .wrapper -->
     {% include 'share_layout/footer.html' %}
 </div><!-- #page -->
-{% comment %}
-<div id="wp-auto-top">
-    <div id="wp-auto-top-top"></div>
-    <div id="wp-auto-top-bottom"></div>
-</div>
-<script> var commentPositionId = '.ds-comments:last';
-var wpAutoTopSpeed = 1;</script>
-
-<div id="su-footer-links" style="text-align: center;"></div>
-{% endcomment %}
-{% comment %}<script type="application/javascript" src="{% static 'blog/js/navigation.js' %}" defer="defer"></script>{% endcomment %}
-
 </body>
 <footer>
-    {%  comment %} <link href="{% static 'highlight/styles/default.css' %}" rel="stylesheet">
-    <script type="application/javascript" src="{% static 'highlight/highlight.pack.js' %}"></script>
-    <script>hljs.initHighlightingOnLoad();</script>{% endcomment  %}
     {% compress js %}
     <script src="{%  static 'blog/js/jquery-3.1.1.js'%}" type  ="text/javascript"></script>
     <script src ="{% static  'blog/js/nprogress.js'  %}" type ="textx/javascript"></script>
